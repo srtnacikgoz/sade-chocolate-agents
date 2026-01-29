@@ -5,6 +5,7 @@
 Bu planın kendisini tasarlayan, "Büyük Resmi" gören ajandır.
 - **Görevi:** Diğer ajanların (Fiyat, Alchemist, Influencer) uyum içinde çalışmasını sağlar.
 - **Çıktısı:** Aşağıdaki teknik yol haritası ve sistem tasarımı.
+- **Beslenme Kaynağı:** **GitHub**. (Yeni çıkan AI ajan kütüphanelerini, otonom pazarlama scriptlerini [Örn: AutoGPT, BabyAGI] takip eder ve sistemi sürekli günceller).
 
 ### Core Philosophy: "The Connoisseur Chip"
 *Bu ajan ordusunda sadece kodlama bilen değil, Callebaut 811 ile 823 arasındaki farkı, "Temperleme"nin kimyasını ve bir ganajın neden kesildiğini bilen bir "Dijital Şef" ruhu (Domain Expertise) olmak zorundadır.*
@@ -37,9 +38,20 @@ Bu planın kendisini tasarlayan, "Büyük Resmi" gören ajandır.
 - **Girdiler:** 
     - **Reddit (`r/chocolate`, `r/AskCulinary`):** Profesyonellerin dedikoduları ve teknik tartışmalar.
     - **Pinterest:** Lüks ambalaj ve görsel sunum trendleri.
+    - **X (Twitter):** *"Şu an viral olan ne?"* sorusunun cevabı. (Örn: "Dubai Çikolatası" çılgınlığı önce TikTok'ta başlar, X'te tartışılır, Instagram'a düşer).
     - **Michelin Menüleri:** Global şeflerin kullandığı yeni malzemeler.
 - **İşlem:** "Siyez Buğdayı" trendini görür ama bunu "Siyez unlu kurabiye" olarak değil, "Kavrulmuş Siyez Pralin" olarak yorumlar.
 - **Çıktı:** "Şefim, Madagaskar vanilyası klişe oldu. Tahiti vanilyası ve Tonka Fasulyesi eşleşmesi öneriyorum."
+
+### 🧐 The Perfectionist (UX & Brand Auditor)
+*Bizim en acımasız eleştirmenimiz. "Sade" ismine leke sürdürmez.*
+- **Persona:** Obsesif bir Sanat Yönetmeni ve QA (Kalite Kontrol) Mühendisi.
+- **Görevi:** `sadechocolate.com`'u 7/24 tarar. Kendini müşteri yerine koyar.
+- **Girdiler:** 
+    - **Site Performansı:** PageSpeed, Broken Link Checker.
+    - **Rakip Benchmarking:** "Vakko'nun sepet sayfası 2 adımda bitiyor, bizimki neden 4 adım?"
+    - **Görsel Kontrol:** "Bu ürün fotoğrafı karanlık çıkmış, marka kimliğine uymuyor."
+- **Çıktı:** "Mobil anasayfada 'Satın Al' butonu 3 piksel kaymış. Kabul edilemez. Hemen düzeltilmeli."
 
 ---
 
