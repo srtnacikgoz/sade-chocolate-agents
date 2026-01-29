@@ -4,7 +4,8 @@
 ## 1. Lojistik Protokolü: "Night Shipping"
 Antalya'nın yazın 45 dereceye varan sıcaklığı en büyük risktir.
 - **Kural:** Kargolar güneş altında beklemez.
-- **Operasyon:** Paketler akşam saatlerinde (Güneş battıktan sonra) şubeye teslim edilir veya direkt ana dağıtım merkezine (Transfer Merkezi) götürülür. Ertesi sabah teslimat hedeflenir.
+- **Maliyet Gerçeği (2026):** Standart lojistik (112 TL) + Yalıtım (28 TL) = **140 TL/Kutu**.
+- **Operasyon:** Bu yüksek maliyet ancak "Ertesi Gün Teslimat" garantisi ve "Erimişse İade" taahhüdü ile satışa dönüşebilir. Paketler akşam saatlerinde şubeye teslim edilir.
 
 ## 2. Ambalaj Teknolojisi (Isı Yalıtımı)
 Sürdürülebilir ve Premium çözüm arayışı.

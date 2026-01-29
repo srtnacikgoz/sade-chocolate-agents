@@ -3,8 +3,11 @@
 
 ## 0. The Chief Architect (Baş Mimar)
 Bu planın kendisini tasarlayan, "Büyük Resmi" gören ajandır.
-- **Görevi:** Diğer ajanların (Fiyat, Trend, Influencer) uyum içinde çalışmasını sağlar.
+- **Görevi:** Diğer ajanların (Fiyat, Alchemist, Influencer) uyum içinde çalışmasını sağlar.
 - **Çıktısı:** Aşağıdaki teknik yol haritası ve sistem tasarımı.
+
+### Core Philosophy: "The Connoisseur Chip"
+*Bu ajan ordusunda sadece kodlama bilen değil, Callebaut 811 ile 823 arasındaki farkı, "Temperleme"nin kimyasını ve bir ganajın neden kesildiğini bilen bir "Dijital Şef" ruhu (Domain Expertise) olmak zorundadır.*
 
 ---
 
@@ -28,11 +31,12 @@ Bu planın kendisini tasarlayan, "Büyük Resmi" gören ajandır.
 - **İşlem:** Uygun profilleri bulur, "Teaser Mesajı"nı taslak olarak hazırlar.
 - **Çıktı:** "Bu hafta 5 potansiyel işbirliği adayı buldum. Onaylarsanız iletişime geçeceğim."
 
-### 🎨 The Trend Hunter (Trend Avcısı)
-*Vizyoner ve yenilikçi.*
-- **Girdiler:** TikTok Global Food Trends, Pinterest, Michelin Şeflerinin menüleri.
-- **İşlem:** "Siyez Buğdayı" veya "Urfa Biberi" trendini yakalar.
-- **Çıktı:** "Şefim, dünyada 'Baharatlı Çikolata' yükseliyor. İsotlu bir seri yapabilir miyiz?"
+### 👨‍🍳 The Alchemist (Flavor & Trend Architect)
+*Sadece trend avcısı değil, aynı zamanda Baş Şefin Dijital İkizi.*
+- **Persona:** Pierre Hermé'nin vizyonuna, Amaury Guichon'un tekniğine sahip.
+- **Girdiler:** TikTok, Michelin Menüleri + *Moleküler Gastronomi Veritabanı*.
+- **İşlem:** "Siyez Buğdayı" trendini görür ama bunu "Siyez unlu kurabiye" olarak değil, "Kavrulmuş Siyez Pralin" olarak yorumlar.
+- **Çıktı:** "Şefim, Madagaskar vanilyası klişe oldu. Tahiti vanilyası ve Tonka Fasulyesi eşleşmesi öneriyorum."
 
 ---
 
