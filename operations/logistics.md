@@ -21,6 +21,9 @@ Sürdürülebilir ve Premium çözüm arayışı.
 - **Yün Yalıtım (Woolcool Muadili):** Yıkanmış doğal yün.
 - **Mantar (Mycelium):** Biyobozunur dolgu.
 - **Uygulama:** Kutu içine bu paneller yerleştirilir, şık bir kağıt ile kapatılır. Strafor gibi "ucuz" ve "çevreyi kirleten" görüntüden kaçınılır.
+- **Unboxing Sanatı (Influencer Paketi):**
+    - Paket "Instagrammable" olmalı.
+    - İçinden çıkan **El Yazısı Not**, dijital dünyada en güçlü "insani" bağdır.
 
 ## 3. Stok Yönetimi
 - **Micro-Batch:** Ürünler stokta aylarca beklemez. "Drop" usulü taze üretilir ve hemen kargolanır.
