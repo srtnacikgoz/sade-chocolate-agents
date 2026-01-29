@@ -12,7 +12,8 @@
 ## 2. Fiyatlandırma & Rakip İstihbaratı
 *Dosya: `marketing/03_pricing_models.md`*
 - **Araştırılacaklar:**
-    - [ ] **Gramaj Fiyatları:** Vakko, Butterfly ve Divan'ın sadece kutu değil, gram satış fiyatlarını (TL/gr) çekecek bir veri seti.
+- **Araştırılacaklar:**
+    - [ ] **Gramaj Fiyatları:** Vakko, Butterfly, Marie Antoinette ve Divan'ın sadece kutu değil, gram satış fiyatlarını (TL/gr) çekecek bir veri seti.
     - [ ] **Gizli Maliyet:** Savsu PCM ve özel yalıtımın birim maliyeti vs. Erime riski maliyeti.
 
 ## 3. Lojistik & Ambalaj Teknolojisi

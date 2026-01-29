@@ -2,7 +2,7 @@
 *Bu klasör, Pricing Analyst ve CFO ajanlarının kullanacağı hesaplama araçlarını içerir.*
 
 ## 1. Competitor Watchdog (Rakip Gözcüsü)
-- **Hedef:** Vakko, Butterfly ve Läderach fiyatlarını anlık takip etmek.
+- **Hedef:** Vakko, Butterfly, Marie Antoinette (Zorlu), Baylan ve Divan fiyatlarını anlık takip etmek.
 - **Mekanik:**
     - `Web Scraper`: Hedef sitelerden "Ürün Adı", "Gramaj" ve "Fiyat" verisini çeker.
     - `Unit_Converter`: Tüm fiyatları ortak paydaya (TL/Gram) dönüştürür.
