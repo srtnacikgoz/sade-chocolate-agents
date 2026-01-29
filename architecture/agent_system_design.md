@@ -15,15 +15,15 @@ Bu planın kendisini tasarlayan, "Büyük Resmi" gören ajandır.
 
 ### 🕵️‍♂️ The Pricing Analyst (Fiyat İstihbaratı)
 *Duygusuz, sadece matematik.*
-- **Girdiler:** Vakko, Butterfly, Divan web siteleri, Callebaut hammadde borsası.
-- **İşlem:** Fiyatları "TL/Gram" cinsine çevirir. Gizli maliyetleri (Ambalaj, Kargo) ekler.
-- **Çıktı:** "Rakipler ortalama 5.2 TL/gr satıyor. Bizim maliyetimiz 2.1 TL/gr. Tavsiye edilen fiyat aralığı: 4.8 - 5.5 TL/gr."
+- **Girdiler:** Vakko/Butterfly Fiyatları + **Google Maps/Trustpilot Yorumları** (Rakiplerin 1 yıldızlı yorumları = Bizim fırsatlarımız).
+- **İşlem:** Fiyatları "TL/Gram" cinsine çevirir. Rakip şikayetlerini ("Kargo erimiş geldi") analiz ederek operasyonel risk primi ekler.
+- **Çıktı:** "Rakipler ortalama 5.2 TL/gr satıyor. Ancak 'Erimiş Paket' şikayetleri %20 artmış. Biz 'Erimeme Garantisi' ile 6.0 TL/gr satabiliriz."
 
 ### 🚀 The Growth Hacker (Büyüme Korsanı)
 *Fırsatçı ve veri odaklı.*
-- **Girdiler:** Google Trends, Site Trafiği, Sepet Terk oranları.
-- **İşlem:** "Antalya Hediye" aramasında hacim arttığını fark eder.
-- **Çıktı:** "Acil 'Antalya İçi Aynı Gün Teslimat' reklamı çıkmalıyız."
+- **Girdiler:** Google Trends + **LinkedIn (Kurumsal Av)**.
+- **İşlem:** "Antalya Hediye" aramasında hacim arttığını veya LinkedIn'de "İK Direktörleri"nin "Yılbaşı Hediyesi" aradığını fark eder.
+- **Çıktı:** "Acil 'Kurumsal Hediye Kataloğu' reklamı çıkmalıyız."
 
 ### 🤝 The Influencer Hunter (PR Uzmanı)
 *Seçici, nazik ve diplomatik.*
@@ -34,7 +34,10 @@ Bu planın kendisini tasarlayan, "Büyük Resmi" gören ajandır.
 ### 👨‍🍳 The Alchemist (Flavor & Trend Architect)
 *Sadece trend avcısı değil, aynı zamanda Baş Şefin Dijital İkizi.*
 - **Persona:** Pierre Hermé'nin vizyonuna, Amaury Guichon'un tekniğine sahip.
-- **Girdiler:** TikTok, Michelin Menüleri + *Moleküler Gastronomi Veritabanı*.
+- **Girdiler:** 
+    - **Reddit (`r/chocolate`, `r/AskCulinary`):** Profesyonellerin dedikoduları ve teknik tartışmalar.
+    - **Pinterest:** Lüks ambalaj ve görsel sunum trendleri.
+    - **Michelin Menüleri:** Global şeflerin kullandığı yeni malzemeler.
 - **İşlem:** "Siyez Buğdayı" trendini görür ama bunu "Siyez unlu kurabiye" olarak değil, "Kavrulmuş Siyez Pralin" olarak yorumlar.
 - **Çıktı:** "Şefim, Madagaskar vanilyası klişe oldu. Tahiti vanilyası ve Tonka Fasulyesi eşleşmesi öneriyorum."
 
