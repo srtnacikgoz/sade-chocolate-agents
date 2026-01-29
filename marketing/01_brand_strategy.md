@@ -19,9 +19,10 @@
 ## 2. Büyüme Stratejisi: Scale vs. Exclusivity
 *Lüks algısını kaybetmeden nasıl büyürüz?*
 
-### Strateji A: "Selected Editions" (Seçili Vitrin)
+### Strateji A: "Selected Editions" & Davetiye (Exclusivity)
 Online mağaza (sadechocolate.com) fiziksel dükkanın (Antalya) birebir kopyası olmamalıdır.
 - **Online'da:** Sadece "Hediyelik", "Koleksiyonluk" ve "Dayanıklı" özel seriler.
+- **Davetiye Modeli (Hermès / Chanel Stratejisi):** Bazı çok özel seriler (örn: Şefin "Masterpiece" serisi) herkese açık olmaz. Sadece sadık müşterilere gönderilen özel bir link ile alınabilir.
 - **Mağazada:** Taze, günlük, kırılgan lezzetler. Bu durum "Mağazaya gitme" arzusunu canlı tutar.
 
 ### Strateji B: "Micro-Batch & Pre-Order"

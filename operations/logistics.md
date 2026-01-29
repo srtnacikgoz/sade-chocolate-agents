@@ -14,7 +14,10 @@ Sürdürülebilir ve Premium çözüm arayışı.
 - **Tedarikçi:** **Savsu** (Yerli Üretici).
 - **Avantaj:** Standart buz aküsünden (Jel buz) çok daha uzun süre korur ve ıslanma yapmaz.
 
-### B. Yalıtım Malzemesi
+### B. Yalıtım Malzemesi (Global Benchmarks)
+- **Teknolojiler:**
+    - *Biomailer / Biocooler*: Bitki nişastası bazlı köpükler (Strafor kadar iyi ama kompostlanabilir).
+    - *RecyCold Climaliner*: Kağıt bazlı yalıtım. (Neuhaus markasının kullandığı teknoloji).
 - **Yün Yalıtım (Woolcool Muadili):** Yıkanmış doğal yün.
 - **Mantar (Mycelium):** Biyobozunur dolgu.
 - **Uygulama:** Kutu içine bu paneller yerleştirilir, şık bir kağıt ile kapatılır. Strafor gibi "ucuz" ve "çevreyi kirleten" görüntüden kaçınılır.

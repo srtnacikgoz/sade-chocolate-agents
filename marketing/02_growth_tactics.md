@@ -22,8 +22,10 @@
 - **Fikir:** Ajanslara/Ofislere isimsiz, sadece QR kodlu kutu bırakmak.
 - **Mesaj:** *"If you know, you know."*
 
-### Asansör ve Sokak (Sticker Art)
-- **Mesaj:** *"Bu asansörde çıkan fikirlerin %72'si şekersiz. Beynin değil, damağın çalışsın."*
+### Asansör ve Sokak (Sticker Art & Installations)
+- **Eriyen Çikolata Sticker'ları:** Ofis binalarının zeminine "Eriyen Çikolata" görünümlü gerçekçi 3D stickerlar. Altına QR: *"Bizde erimez. Night Shipping ile gelir."*
+- **Donmuş Bloklar:** Kışın sokak lambalarına asılı "Donmuş Çikolata Blokları". (Kırıp paylaşmak serbest).
+- **Bench Ads:** Park banklarına 3D "Dev Çikolata Barı" kılıfı giydirmek.
 
 ## 3. İşbirlikleri (Co-Marketing)
 - **Partnerler:** Lüks Çiçekçiler (Misk, Ribbon vb.), 3. Dalga Kahveciler, Sanat Galerileri.
