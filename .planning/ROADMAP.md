@@ -1,115 +1,46 @@
 # Roadmap: Sade Chocolate Agents
 
-## Overview
+## Milestones
 
-Sade Chocolate için AI destekli iş operasyonları multi-agent sistemi. Temel altyapıdan başlayarak 7 uzman agent (Narrator, Pricing Analyst, Growth Hacker, Alchemist, Curator, Perfectionist) ve bunların skill'lerini inşa edip, orkestrasyon katmanı ile birleştirerek günlük iş akışına entegre edeceğiz.
+- ✅ **v1.0 MVP** — Phases 1-9 (shipped 2026-01-30)
+- 📋 **v1.1 Real APIs** — Planned (web scraping, social media integrations)
+- 📋 **v2.0 Website** — Planned (sadechocolate.com integration)
+
+## Completed Milestones
+
+- ✅ [v1.0 MVP](milestones/v1.0-ROADMAP.md) (Phases 1-9) — SHIPPED 2026-01-30
+
+<details>
+<summary>✅ v1.0 MVP (Phases 1-9) — SHIPPED 2026-01-30</summary>
+
+- [x] Phase 1: Temel Altyapi (3/3 plans) — completed 2026-01-30
+- [x] Phase 2: The Narrator (2/2 plans) — completed 2026-01-30
+- [x] Phase 3: The Pricing Analyst (3/3 plans) — completed 2026-01-30
+- [x] Phase 4: The Growth Hacker (1/1 plans) — completed 2026-01-30
+- [x] Phase 5: The Alchemist (1/1 plans) — completed 2026-01-30
+- [x] Phase 6: The Curator (3/3 plans) — completed 2026-01-30
+- [x] Phase 7: The Perfectionist (2/2 plans) — completed 2026-01-30
+- [x] Phase 8: Orkestrasyon (3/3 plans) — completed 2026-01-30
+- [x] Phase 9: Entegrasyon (1/1 plans) — completed 2026-01-30
+
+**Total:** 9 phases, 19 plans, 5,125 LOC Python
+
+</details>
+
+## Progress
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Temel Altyapi | v1.0 | 3/3 | Complete | 2026-01-30 |
+| 2. The Narrator | v1.0 | 2/2 | Complete | 2026-01-30 |
+| 3. The Pricing Analyst | v1.0 | 3/3 | Complete | 2026-01-30 |
+| 4. The Growth Hacker | v1.0 | 1/1 | Complete | 2026-01-30 |
+| 5. The Alchemist | v1.0 | 1/1 | Complete | 2026-01-30 |
+| 6. The Curator | v1.0 | 3/3 | Complete | 2026-01-30 |
+| 7. The Perfectionist | v1.0 | 2/2 | Complete | 2026-01-30 |
+| 8. Orkestrasyon | v1.0 | 3/3 | Complete | 2026-01-30 |
+| 9. Entegrasyon | v1.0 | 1/1 | Complete | 2026-01-30 |
 
 ## Domain Expertise
 
 None
-
-## Phases
-
-**Faz Numaralandırma:**
-- Tam sayı fazlar (1, 2, 3): Planlı milestone çalışması
-- Ondalık fazlar (2.1, 2.2): Acil eklemeler (INSERTED ile işaretli)
-
-- [x] **Phase 1: Temel Altyapı** - Python + CrewAI çekirdek framework kurulumu (3/3 plan complete) ✅
-- [x] **Phase 2: The Narrator** - Marka sesi agenti ve skill'leri (2/2 plan complete) ✅
-- [x] **Phase 3: The Pricing Analyst** - Rekabet istihbaratı agenti ve skill'leri (3/3 plan complete) ✅
-- [x] **Phase 4: The Growth Hacker** - Trend takip agenti ve skill'leri (1/1 plan complete) ✅
-- [x] **Phase 5: The Alchemist** - Lezzet/reçete agenti ve skill'leri (1/1 plan complete) ✅
-- [x] **Phase 6: The Curator** - Görsel tasarım agenti ve skill'leri (3/3 plan complete) ✅
-- [x] **Phase 7: The Perfectionist** - UX denetim agenti ve skill'leri (2/2 plan complete) ✅
-- [x] **Phase 8: Orkestrasyon** - Chief Architect rolü, agent'lar arası iletişim (3/3 plan complete) ✅
-- [x] **Phase 9: Entegrasyon** - Günlük iş akışına dahil etme (1/1 plan complete) ✅
-
-## Phase Details
-
-### Phase 1: Temel Altyapı
-**Goal**: Python + CrewAI çekirdek framework kurulumu, proje yapısı, temel agent sınıfları
-**Depends on**: Nothing (first phase)
-**Research**: Likely (CrewAI kurulumu, agent mimari kalıpları)
-**Research topics**: CrewAI best practices, agent base class patterns, project structure conventions
-**Plans**: TBD
-
-### Phase 2: The Narrator
-**Goal**: Marka sesi agenti - "Sessiz Lüks" tonunda içerik üretimi, Monocle/Kinfolk editorial voice
-**Depends on**: Phase 1
-**Research**: Unlikely (marka sesi zaten belgelenmiş, iç prompt tasarımı)
-**Plans**: TBD
-
-### Phase 3: The Pricing Analyst
-**Goal**: Rekabet istihbaratı agenti - Vakko, Butterfly gibi rakiplerin fiyat takibi ve analizi
-**Depends on**: Phase 1
-**Research**: Likely (web scraping araçları, rakip fiyat veri kaynakları)
-**Research topics**: Web scraping kütüphaneleri (BeautifulSoup, Playwright), Türk premium çikolata markası web siteleri, fiyat karşılaştırma yaklaşımları
-**Plans**: TBD
-
-### Phase 4: The Growth Hacker
-**Goal**: Trend takip agenti - Pazar fırsatları, sosyal medya trendleri, büyüme önerileri
-**Depends on**: Phase 1
-**Research**: Likely (trend izleme yaklaşımları, veri kaynakları)
-**Research topics**: Trend API'leri, sosyal medya analiz araçları, Türkiye pazarı veri kaynakları
-**Plans**: TBD
-
-### Phase 5: The Alchemist
-**Goal**: Lezzet/reçete agenti - Çikolata trendleri, yeni reçete önerileri, malzeme kombinasyonları
-**Depends on**: Phase 1
-**Research**: Unlikely (alan bilgisi mevcut, Callebaut 811/823, tempering chemistry)
-**Plans**: TBD
-
-### Phase 6: The Curator
-**Goal**: Görsel tasarım agenti - Gemini 3 Pro ile varyasyon tabanlı ürün etiketi tasarımı, "Sessiz Lüks" estetikli görsel üretim
-**Depends on**: Phase 1
-**Research**: Complete (Gemini 3 Pro Image API, style guide yaklaşımı)
-**Plans**: 3 plans (3/3 complete)
-Plans:
-- [x] 06-01-PLAN.md — Style guide ve referans yapılandırması ✅
-- [x] 06-02-PLAN.md — Curator skills (gorsel_tasarla) ✅
-- [x] 06-03-PLAN.md — CuratorAgent ve run scripti ✅
-
-### Phase 7: The Perfectionist
-**Goal**: UX denetim agenti - LLM-as-Judge pattern ile marka tutarlılığı kontrolü, kalite güvence, Türkçe iyileştirme önerileri
-**Depends on**: Phase 1
-**Research**: Complete (LLM-as-Judge patterns, Generator-Critic, Pydantic structured output)
-**Plans**: 2 plans
-Plans:
-- [x] 07-01-PLAN.md — AuditResult modeli ve perfectionist skills ✅
-- [x] 07-02-PLAN.md — PerfectionistAgent ve run scripti ✅
-
-### Phase 8: Orkestrasyon
-**Goal**: Multi-agent workflow orchestration - SadeCrewFactory ile 3 crew kompozisyonu (Product Launch, Market Analysis, Quality Audit), task context ile sequential process
-**Depends on**: Phases 2-7
-**Research**: Complete (CrewAI multi-agent koordinasyon kalıpları)
-**Plans**: 3 plans
-Plans:
-- [x] 08-01-PLAN.md — Workflow models ve base crew utilities ✅
-- [x] 08-02-PLAN.md — ProductLaunchCrew, MarketAnalysisCrew, QualityAuditCrew, SadeCrewFactory ✅
-- [x] 08-03-PLAN.md — CLI script (run_crews.py) ve entegrasyon ✅
-
-### Phase 9: Entegrasyon
-**Goal**: Günlük iş akışına dahil etme - CLI araçları, dokümantasyon, kullanım kılavuzları
-**Depends on**: Phase 8
-**Research**: Unlikely (iç iş akışı, dokümantasyon)
-**Plans**: 1 plan (1/1 complete)
-Plans:
-- [x] 09-01-PLAN.md — README.md ve docs/USAGE.md dokümantasyonu ✅
-
-## Progress
-
-**Execution Order:**
-Fazlar numerik sırada çalışır: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
-(Not: Phase 2-7 bağımsız olabilir, paralel çalışılabilir)
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Temel Altyapı | 3/3 | Complete | 2026-01-30 |
-| 2. The Narrator | 2/2 | Complete | 2026-01-30 |
-| 3. The Pricing Analyst | 3/3 | Complete | 2026-01-30 |
-| 4. The Growth Hacker | 1/1 | Complete | 2026-01-30 |
-| 5. The Alchemist | 1/1 | Complete | 2026-01-30 |
-| 6. The Curator | 3/3 | Complete | 2026-01-30 |
-| 7. The Perfectionist | 2/2 | Complete | 2026-01-30 |
-| 8. Orkestrasyon | 3/3 | Complete | 2026-01-30 |
-| 9. Entegrasyon | 1/1 | Complete | 2026-01-30 |
