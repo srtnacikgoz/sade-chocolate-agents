@@ -95,7 +95,7 @@ Fazlar numerik sırada çalışır: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 
 |-------|----------------|--------|-----------|
 | 1. Temel Altyapı | 3/3 | Complete | 2026-01-30 |
 | 2. The Narrator | 2/2 | Complete | 2026-01-30 |
-| 3. The Pricing Analyst | 1/3 | In progress | - |
+| 3. The Pricing Analyst | 2/3 | In progress | - |
 | 4. The Growth Hacker | 0/TBD | Not started | - |
 | 5. The Alchemist | 0/TBD | Not started | - |
 | 6. The Curator | 0/TBD | Not started | - |
