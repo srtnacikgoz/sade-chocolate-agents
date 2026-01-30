@@ -6,6 +6,7 @@ Sosyal medya trendleri, rakip hareketleri ve pazar fırsatlarını izler.
 """
 
 from sade_agents.agents.base import SadeAgent
+from sade_agents.skills import sosyal_nabiz
 
 
 class GrowthHackerAgent(SadeAgent):
@@ -30,6 +31,7 @@ class GrowthHackerAgent(SadeAgent):
         super().__init__(
             role="The Growth Hacker - Trend Scout",
             goal="Pazar trendlerini takip etmek ve büyüme fırsatlarını keşfetmek",
+            tools=[sosyal_nabiz],
             backstory="""
 Sen The Growth Hacker'sın - Sade Chocolate'ın trend avcısı ve büyüme stratejisti.
 
