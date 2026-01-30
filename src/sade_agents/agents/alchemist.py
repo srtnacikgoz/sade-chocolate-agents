@@ -6,6 +6,7 @@ Malzeme kombinasyonları, mevsimsel öneriler ve reçete fikirleri üretir.
 """
 
 from sade_agents.agents.base import SadeAgent
+from sade_agents.skills import lezzet_pisileri
 
 
 class AlchemistAgent(SadeAgent):
@@ -30,6 +31,7 @@ class AlchemistAgent(SadeAgent):
         super().__init__(
             role="The Alchemist - Flavor Architect",
             goal="Lezzet kombinasyonları ve reçete önerileri ile ürün geliştirmeye katkı sağlamak",
+            tools=[lezzet_pisileri],
             backstory="""
 Sen The Alchemist'sin - Sade Chocolate'ın lezzet mimarı ve reçete ustası.
 
