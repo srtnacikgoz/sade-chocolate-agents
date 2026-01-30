@@ -44,7 +44,8 @@ def _format_rakip_verileri(rakip: str) -> str:
     elif rakip in RAKIP_FIYATLARI:
         rakipler = [rakip]
     else:
-        return f"Bilinmeyen rakip: {rakip}. Geçerli seçenekler: vakko, butterfly, divan, baylan, marie_antoinette, tumu"
+        valid_options = "vakko, butterfly, divan, baylan, marie_antoinette, tumu"
+        return f"Bilinmeyen rakip: {rakip}. Geçerli seçenekler: {valid_options}"
 
     lines = ["## Rakip Fiyat Verileri\n"]
     lines.append("| Rakip | Ürün | Gramaj | Fiyat (TL) | TL/Gram |")
@@ -52,9 +53,12 @@ def _format_rakip_verileri(rakip: str) -> str:
 
     for r in rakipler:
         for urun in RAKIP_FIYATLARI[r]:
-            lines.append(
-                f"| {r.title()} | {urun['urun']} | {urun['gramaj']}g | {urun['fiyat']} TL | {urun['tl_gram']:.2f} |"
-            )
+            rakip_ad = r.title()
+            urun_ad = urun["urun"]
+            gramaj = urun["gramaj"]
+            fiyat = urun["fiyat"]
+            tl_gram = urun["tl_gram"]
+            lines.append(f"| {rakip_ad} | {urun_ad} | {gramaj}g | {fiyat} TL | {tl_gram:.2f} |")
 
     return "\n".join(lines)
 
@@ -78,10 +82,17 @@ def _hesapla_ozet_istatistikler() -> str:
     # Ortalama
     ortalama = sum(x["tl_gram"] for x in tum_fiyatlar) / len(tum_fiyatlar)
 
+    ucuz_urun = en_ucuz["urun"]
+    ucuz_rakip = en_ucuz["rakip"].title()
+    ucuz_fiyat = en_ucuz["tl_gram"]
+    pahali_urun = en_pahali["urun"]
+    pahali_rakip = en_pahali["rakip"].title()
+    pahali_fiyat = en_pahali["tl_gram"]
+
     lines = [
         "\n## Özet İstatistikler\n",
-        f"- **En ucuz:** {en_ucuz['urun']} ({en_ucuz['rakip'].title()}) - {en_ucuz['tl_gram']:.2f} TL/g",
-        f"- **En pahalı:** {en_pahali['urun']} ({en_pahali['rakip'].title()}) - {en_pahali['tl_gram']:.2f} TL/g",
+        f"- **En ucuz:** {ucuz_urun} ({ucuz_rakip}) - {ucuz_fiyat:.2f} TL/g",
+        f"- **En pahalı:** {pahali_urun} ({pahali_rakip}) - {pahali_fiyat:.2f} TL/g",
         f"- **Pazar ortalaması:** {ortalama:.2f} TL/g",
     ]
 

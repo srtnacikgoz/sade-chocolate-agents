@@ -11,11 +11,36 @@ from crewai.tools import tool
 # Mock trend verileri (gerçek API/scraping ileride eklenebilir)
 TREND_VERILERI = {
     "x_twitter": [
-        {"hashtag": "#artisanchocolate", "mentions": 2400, "sentiment": "pozitif", "trend": "yukselis"},
-        {"hashtag": "#turkishsweets", "mentions": 1800, "sentiment": "pozitif", "trend": "stabil"},
-        {"hashtag": "#premiumgifts", "mentions": 3200, "sentiment": "notr", "trend": "yukselis"},
-        {"hashtag": "#cikolata", "mentions": 4500, "sentiment": "pozitif", "trend": "stabil"},
-        {"hashtag": "#chocolatelover", "mentions": 8900, "sentiment": "pozitif", "trend": "yukselis"},
+        {
+            "hashtag": "#artisanchocolate",
+            "mentions": 2400,
+            "sentiment": "pozitif",
+            "trend": "yukselis",
+        },
+        {
+            "hashtag": "#turkishsweets",
+            "mentions": 1800,
+            "sentiment": "pozitif",
+            "trend": "stabil",
+        },
+        {
+            "hashtag": "#premiumgifts",
+            "mentions": 3200,
+            "sentiment": "notr",
+            "trend": "yukselis",
+        },
+        {
+            "hashtag": "#cikolata",
+            "mentions": 4500,
+            "sentiment": "pozitif",
+            "trend": "stabil",
+        },
+        {
+            "hashtag": "#chocolatelover",
+            "mentions": 8900,
+            "sentiment": "pozitif",
+            "trend": "yukselis",
+        },
     ],
     "instagram": [
         {"trend": "Minimalist ambalaj", "engagement": "yuksek", "segment": "luks"},
@@ -25,16 +50,51 @@ TREND_VERILERI = {
         {"trend": "Sustainable packaging", "engagement": "orta", "segment": "luks"},
     ],
     "reddit": [
-        {"subreddit": "r/chocolate", "topic": "Turkish chocolate brands", "upvotes": 156, "sentiment": "merakli"},
-        {"subreddit": "r/snackexchange", "topic": "Premium chocolates", "upvotes": 89, "sentiment": "pozitif"},
-        {"subreddit": "r/FoodPorn", "topic": "Artisan chocolate close-ups", "upvotes": 2300, "sentiment": "pozitif"},
+        {
+            "subreddit": "r/chocolate",
+            "topic": "Turkish chocolate brands",
+            "upvotes": 156,
+            "sentiment": "merakli",
+        },
+        {
+            "subreddit": "r/snackexchange",
+            "topic": "Premium chocolates",
+            "upvotes": 89,
+            "sentiment": "pozitif",
+        },
+        {
+            "subreddit": "r/FoodPorn",
+            "topic": "Artisan chocolate close-ups",
+            "upvotes": 2300,
+            "sentiment": "pozitif",
+        },
     ],
     "pazar_sinyalleri": [
-        {"sinyal": "Zorlu Center yeni gıda katta açılış", "tip": "firsat", "oncelik": "yuksek"},
-        {"sinyal": "Vakko yeni çikolata serisi lansmanı", "tip": "rakip", "oncelik": "orta"},
-        {"sinyal": "Nişantaşı butik trendi devam ediyor", "tip": "lokasyon", "oncelik": "orta"},
-        {"sinyal": "Kurumsal hediye sezonu yaklaşıyor (Şubat)", "tip": "sezon", "oncelik": "yuksek"},
-        {"sinyal": "Bebek'te yeni premium cafe açılışları", "tip": "lokasyon", "oncelik": "dusuk"},
+        {
+            "sinyal": "Zorlu Center yeni gıda katta açılış",
+            "tip": "firsat",
+            "oncelik": "yuksek",
+        },
+        {
+            "sinyal": "Vakko yeni çikolata serisi lansmanı",
+            "tip": "rakip",
+            "oncelik": "orta",
+        },
+        {
+            "sinyal": "Nişantaşı butik trendi devam ediyor",
+            "tip": "lokasyon",
+            "oncelik": "orta",
+        },
+        {
+            "sinyal": "Kurumsal hediye sezonu yaklaşıyor (Şubat)",
+            "tip": "sezon",
+            "oncelik": "yuksek",
+        },
+        {
+            "sinyal": "Bebek'te yeni premium cafe açılışları",
+            "tip": "lokasyon",
+            "oncelik": "dusuk",
+        },
     ],
 }
 
@@ -47,9 +107,11 @@ def _format_twitter_verileri() -> str:
 
     for item in TREND_VERILERI["x_twitter"]:
         trend_emoji = "📈" if item["trend"] == "yukselis" else "➡️"
-        lines.append(
-            f"| {item['hashtag']} | {item['mentions']:,} | {item['sentiment']} | {trend_emoji} {item['trend']} |"
-        )
+        hashtag = item["hashtag"]
+        mentions = item["mentions"]
+        sentiment = item["sentiment"]
+        trend = item["trend"]
+        lines.append(f"| {hashtag} | {mentions:,} | {sentiment} | {trend_emoji} {trend} |")
 
     return "\n".join(lines)
 
@@ -75,9 +137,11 @@ def _format_reddit_verileri() -> str:
     lines.append("|-----------|------|---------|-----------|")
 
     for item in TREND_VERILERI["reddit"]:
-        lines.append(
-            f"| {item['subreddit']} | {item['topic']} | {item['upvotes']} | {item['sentiment']} |"
-        )
+        subreddit = item["subreddit"]
+        topic = item["topic"]
+        upvotes = item["upvotes"]
+        sentiment = item["sentiment"]
+        lines.append(f"| {subreddit} | {topic} | {upvotes} | {sentiment} |")
 
     return "\n".join(lines)
 
@@ -92,9 +156,10 @@ def _format_pazar_sinyalleri() -> str:
 
     for item in TREND_VERILERI["pazar_sinyalleri"]:
         emoji = oncelik_emoji.get(item["oncelik"], "⚪")
-        lines.append(
-            f"| {item['sinyal']} | {item['tip']} | {emoji} {item['oncelik']} |"
-        )
+        sinyal = item["sinyal"]
+        tip = item["tip"]
+        oncelik = item["oncelik"]
+        lines.append(f"| {sinyal} | {tip} | {emoji} {oncelik} |")
 
     return "\n".join(lines)
 
@@ -102,21 +167,27 @@ def _format_pazar_sinyalleri() -> str:
 def _hesapla_ozet_istatistikler() -> str:
     """Tüm platformlar için özet istatistikler hesaplar."""
     # Twitter özeti
-    toplam_mentions = sum(item["mentions"] for item in TREND_VERILERI["x_twitter"])
-    yukselis_count = sum(1 for item in TREND_VERILERI["x_twitter"] if item["trend"] == "yukselis")
+    twitter_data = TREND_VERILERI["x_twitter"]
+    toplam_mentions = sum(item["mentions"] for item in twitter_data)
+    yukselis_count = sum(1 for item in twitter_data if item["trend"] == "yukselis")
 
     # Instagram özeti
-    yuksek_engagement = sum(1 for item in TREND_VERILERI["instagram"] if item["engagement"] in ["yuksek", "cok_yuksek"])
+    instagram_data = TREND_VERILERI["instagram"]
+    yuksek_engagement = sum(
+        1 for item in instagram_data if item["engagement"] in ["yuksek", "cok_yuksek"]
+    )
 
     # Reddit özeti
     toplam_upvotes = sum(item["upvotes"] for item in TREND_VERILERI["reddit"])
 
     # Pazar sinyalleri özeti
-    yuksek_oncelik = sum(1 for item in TREND_VERILERI["pazar_sinyalleri"] if item["oncelik"] == "yuksek")
+    pazar_data = TREND_VERILERI["pazar_sinyalleri"]
+    yuksek_oncelik = sum(1 for item in pazar_data if item["oncelik"] == "yuksek")
 
     lines = [
         "\n## 📊 Özet İstatistikler\n",
-        f"- **X (Twitter):** {toplam_mentions:,} toplam mention, {yukselis_count} yükselen trend",
+        f"- **X (Twitter):** {toplam_mentions:,} toplam mention, "
+        f"{yukselis_count} yükselen trend",
         f"- **Instagram:** {yuksek_engagement} yüksek engagement'lı trend",
         f"- **Reddit:** {toplam_upvotes:,} toplam upvote",
         f"- **Pazar Sinyalleri:** {yuksek_oncelik} yüksek öncelikli fırsat",
@@ -169,7 +240,8 @@ def sosyal_nabiz(platform: str = "tumu") -> str:
     elif platform == "pazar":
         sections.append(_format_pazar_sinyalleri())
     else:
-        return f"Bilinmeyen platform: {platform}. Geçerli seçenekler: x_twitter, instagram, reddit, pazar, tumu"
+        valid_options = "x_twitter, instagram, reddit, pazar, tumu"
+        return f"Bilinmeyen platform: {platform}. Geçerli seçenekler: {valid_options}"
 
     # Analiz prompt template
     analiz_template = """
