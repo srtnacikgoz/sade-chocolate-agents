@@ -9,7 +9,8 @@ belirli bir iş alanında uzmanlaşacak.
 """
 
 from sade_agents.agents.base import SadeAgent
+from sade_agents.agents.growth_hacker import GrowthHackerAgent
 from sade_agents.agents.narrator import NarratorAgent
 from sade_agents.agents.pricing_analyst import PricingAnalystAgent
 
-__all__: list[str] = ["SadeAgent", "NarratorAgent", "PricingAnalystAgent"]
+__all__: list[str] = ["SadeAgent", "GrowthHackerAgent", "NarratorAgent", "PricingAnalystAgent"]
