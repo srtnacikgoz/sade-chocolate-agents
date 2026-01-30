@@ -8,4 +8,6 @@ Agent'lar CrewAI tabanlı olarak inşa edilecek ve her biri
 belirli bir iş alanında uzmanlaşacak.
 """
 
-__all__: list[str] = []
+from sade_agents.agents.base import SadeAgent
+
+__all__: list[str] = ["SadeAgent"]
