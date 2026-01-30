@@ -48,16 +48,16 @@ cp .env.example .env
 
 ```bash
 # Sistem kontrolü (API çağrısı yapmaz)
-python scripts/run_crews.py --dry-run
+python3 scripts/run_crews.py --dry-run
 
 # Tek bir agent çalıştır
-python scripts/run_narrator.py --dry-run
-python scripts/run_narrator.py --content "Yeni çikolata tanıtımı"
+python3 scripts/run_narrator.py --dry-run
+python3 scripts/run_narrator.py --content "Yeni çikolata tanıtımı"
 
 # Crew workflow çalıştır
-python scripts/run_crews.py product-launch --flavor "Antep Fıstıklı Bitter"
-python scripts/run_crews.py market-analysis --competitor "Vakko"
-python scripts/run_crews.py quality-audit --content "İçerik metni" --content-type metin
+python3 scripts/run_crews.py product-launch --flavor "Antep Fıstıklı Bitter"
+python3 scripts/run_crews.py market-analysis --competitor "Vakko"
+python3 scripts/run_crews.py quality-audit --content "İçerik metni" --content-type metin
 ```
 
 ## Detaylı Kullanım
