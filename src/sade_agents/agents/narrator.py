@@ -6,6 +6,7 @@ Monocle ve Kinfolk dergisi editörü gibi konuşur: sofistike, az ve öz, asla b
 """
 
 from sade_agents.agents.base import SadeAgent
+from sade_agents.skills import hikayelestir
 
 
 class NarratorAgent(SadeAgent):
@@ -33,6 +34,7 @@ class NarratorAgent(SadeAgent):
         super().__init__(
             role="The Narrator - Brand Consultant",
             goal="Sessiz Lüks manifestosunu korumak ve marka sesinde içerik üretmek",
+            tools=[hikayelestir],
             backstory="""
 Sen The Narrator'sın - Sade Chocolate'ın marka sesi ve ruhu.
 

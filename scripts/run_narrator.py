@@ -43,10 +43,12 @@ def dry_run() -> None:
         from sade_agents.agents.base import SadeAgent
         from sade_agents.agents.narrator import NarratorAgent
         from sade_agents.config import get_settings
+        from sade_agents.skills import hikayelestir
 
         print("  ✓ SadeAgent import edildi")
         print("  ✓ NarratorAgent import edildi")
         print("  ✓ Config modülü import edildi")
+        print("  ✓ hikayelestir skill import edildi")
 
         # Agent oluştur (API çağrısı olmadan)
         agent = NarratorAgent()
@@ -54,6 +56,14 @@ def dry_run() -> None:
         print(f"    → Rol: {agent.role}")
         print(f"    → Departman: {agent.department}")
         print(f"    → Otonomi: {agent.autonomy_level}")
+
+        # Tools kontrolü
+        if agent.tools:
+            print(f"  ✓ Tools: {len(agent.tools)} adet")
+            for tool in agent.tools:
+                print(f"    → {tool.name}")
+        else:
+            print("  ⚠ Agent'ta tool yok")
 
         # API key kontrolü
         if check_api_key():
@@ -75,7 +85,7 @@ def dry_run() -> None:
 def run_agent() -> None:
     """The Narrator agent'ı çalıştırır."""
     print("🍫 Sade Chocolate - The Narrator")
-    print("=" * 40)
+    print("=" * 50)
 
     # API key kontrolü
     if not check_api_key():
@@ -97,23 +107,38 @@ def run_agent() -> None:
         print(f"  → Rol: {agent.role}")
         print(f"  → Departman: {agent.department}")
         print(f"  → Otonomi: {agent.autonomy_level}")
+        if agent.tools:
+            print(f"  → Tools: {[t.name for t in agent.tools]}")
 
-        # Marka tanıtım görevi
-        print("\n📋 Görev tanımlanıyor...")
+        # Hikaye oluşturma görevi (hikayelestir tool kullanarak)
+        print("\n📋 Görev: 85g Ruby Çikolata için hikaye oluştur")
+        print("-" * 50)
+
         task = Task(
             description="""
-Sade Chocolate için kısa bir marka tanıtım cümlesi yaz.
+85g Ruby Çikolata Tablet için ürün hikayeleri oluştur.
+
+Ürün Bilgileri:
+- Ürün Adı: Ruby Çikolata Tablet
+- Gramaj: 85g
+- İçerik/Özellikler: Doğal pembe renk, mayhoş tat, dördüncü tür çikolata, Ruby kakao çekirdeği
+
+'hikayelestir' tool'unu kullanarak 3 farklı içerik üret:
+1. Etiket Hikayesi - ürün arkasına
+2. Instagram Caption - sosyal medya postu
+3. Kutu İçi Not - hediye kartı
 
 Kurallar:
 - "Sessiz Lüks" tonunda ol
-- Maksimum 2-3 cümle
 - Emoji kullanma
-- "Hemen Al", "Kaçırma" gibi ifadeler yasak
+- "Hemen Al", "Kaçırma", "Şok Fiyat" gibi ifadeler YASAK
 - Sofistike ve understated ol
-
-Örnek ton: "Bazı tatlar anlatılmaz, sadece hissedilir."
+- Monocle/Kinfolk dergisi editörü gibi konuş
             """,
-            expected_output="Sade Chocolate için 2-3 cümlelik sofistike marka tanıtımı",
+            expected_output="""3 bölümlü içerik:
+1. Etiket Hikayesi (başlık + 2-3 cümle + gramaj)
+2. Instagram Caption (tek kelime açılış + hikaye + hashtagler)
+3. Kutu İçi Not (tırnak içinde cümle + imza)""",
             agent=agent,
         )
 
@@ -127,12 +152,14 @@ Kurallar:
 
         result = crew.kickoff()
 
-        print("\n" + "=" * 40)
-        print("✅ The Narrator Çıktısı:")
-        print("-" * 40)
+        print("\n" + "=" * 50)
+        print("✅ The Narrator - /hikayelestir Çıktısı")
+        print("=" * 50)
+        print()
         print(result)
-        print("=" * 40)
-        print("\n🎉 The Narrator başarıyla çalıştı!")
+        print()
+        print("=" * 50)
+        print("🎉 The Narrator başarıyla çalıştı!")
 
     except Exception as e:
         print(f"\n❌ Hata: {e}")
