@@ -13,5 +13,6 @@ Skill kategorileri:
 """
 
 from sade_agents.skills.narrator_skills import hikayelestir
+from sade_agents.skills.pricing_skills import fiyat_kontrol
 
-__all__: list[str] = ["hikayelestir"]
+__all__: list[str] = ["hikayelestir", "fiyat_kontrol"]

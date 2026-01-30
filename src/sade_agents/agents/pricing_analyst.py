@@ -6,6 +6,7 @@ Vakko, Butterfly, Marie Antoinette, Baylan, Divan fiyatlarını takip eder.
 """
 
 from sade_agents.agents.base import SadeAgent
+from sade_agents.skills import fiyat_kontrol
 
 
 class PricingAnalystAgent(SadeAgent):
@@ -30,7 +31,7 @@ class PricingAnalystAgent(SadeAgent):
         super().__init__(
             role="The Pricing Analyst - Competitive Intelligence",
             goal="Rakip fiyatlarını takip edip rekabetçi fiyat stratejileri önermek",
-            tools=[],
+            tools=[fiyat_kontrol],
             backstory="""
 Sen The Pricing Analyst'sın - Sade Chocolate'ın rekabet istihbaratı uzmanı.
 
