@@ -20,6 +20,11 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
+dependencies = [
+    "crewai>=0.86.0",
+    "python-dotenv>=1.0.0",
+    "pydantic-settings>=2.0.0",
+]
 
 [project.optional-dependencies]
 dev = [
