@@ -12,8 +12,14 @@ Skill kategorileri:
 - Kalite: Denetim, iyileştirme
 """
 
+from sade_agents.skills.alchemist_skills import lezzet_pisileri
 from sade_agents.skills.growth_skills import sosyal_nabiz
 from sade_agents.skills.narrator_skills import hikayelestir
 from sade_agents.skills.pricing_skills import fiyat_kontrol
 
-__all__: list[str] = ["hikayelestir", "fiyat_kontrol", "sosyal_nabiz"]
+__all__: list[str] = [
+    "fiyat_kontrol",
+    "hikayelestir",
+    "lezzet_pisileri",
+    "sosyal_nabiz",
+]
