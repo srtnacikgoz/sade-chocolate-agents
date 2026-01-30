@@ -39,9 +39,9 @@ Every output sounds authentically Sade — consistent brand voice across all dep
 <!-- Explicit boundaries. Includes reasoning to prevent re-adding. -->
 
 - Customer-facing chat — v1 is internal operations only, not customer service
-- External API integrations — no Shopify, social media APIs, payment systems in v1
+- External API integrations — no social media APIs, payment systems in v1
 - Automated financial transactions — human approval required for any money movement
-- sadechocolate.com integration — Phase 3 per existing roadmap, not v1
+- sadechocolate.com integration — v2+ per roadmap, not v1
 
 ## Context
 
