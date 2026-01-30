@@ -12,4 +12,6 @@ Skill kategorileri:
 - Kalite: Denetim, iyileştirme
 """
 
-__all__: list[str] = []
+from sade_agents.skills.narrator_skills import hikayelestir
+
+__all__: list[str] = ["hikayelestir"]
