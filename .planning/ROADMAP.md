@@ -14,7 +14,7 @@ None
 - Tam sayı fazlar (1, 2, 3): Planlı milestone çalışması
 - Ondalık fazlar (2.1, 2.2): Acil eklemeler (INSERTED ile işaretli)
 
-- [ ] **Phase 1: Temel Altyapı** - Python + CrewAI çekirdek framework kurulumu (1/3 plan complete)
+- [ ] **Phase 1: Temel Altyapı** - Python + CrewAI çekirdek framework kurulumu (2/3 plan complete)
 - [ ] **Phase 2: The Narrator** - Marka sesi agenti ve skill'leri
 - [ ] **Phase 3: The Pricing Analyst** - Rekabet istihbaratı agenti ve skill'leri
 - [ ] **Phase 4: The Growth Hacker** - Trend takip agenti ve skill'leri
@@ -93,7 +93,7 @@ Fazlar numerik sırada çalışır: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Temel Altyapı | 1/3 | In progress | - |
+| 1. Temel Altyapı | 2/3 | In progress | - |
 | 2. The Narrator | 0/TBD | Not started | - |
 | 3. The Pricing Analyst | 0/TBD | Not started | - |
 | 4. The Growth Hacker | 0/TBD | Not started | - |
