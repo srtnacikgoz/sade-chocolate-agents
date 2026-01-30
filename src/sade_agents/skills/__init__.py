@@ -16,12 +16,16 @@ from sade_agents.skills.alchemist_skills import lezzet_pisileri
 from sade_agents.skills.curator_skills import gorsel_tasarla
 from sade_agents.skills.growth_skills import sosyal_nabiz
 from sade_agents.skills.narrator_skills import hikayelestir
+from sade_agents.skills.perfectionist_skills import denetle, stil_kilavuzu_yukle, onaylanmis_ornekler_yukle
 from sade_agents.skills.pricing_skills import fiyat_kontrol
 
 __all__: list[str] = [
+    "denetle",
     "fiyat_kontrol",
     "gorsel_tasarla",
     "hikayelestir",
     "lezzet_pisileri",
+    "onaylanmis_ornekler_yukle",
     "sosyal_nabiz",
+    "stil_kilavuzu_yukle",
 ]
