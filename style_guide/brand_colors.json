@@ -1,0 +1,91 @@
+{
+  "brand_name": "Sade Chocolate",
+  "aesthetic": "quiet_luxury",
+  "description": "Sessiz Lüks (Quiet Luxury) estetigi - understated elegance icin renk paleti",
+  "colors": {
+    "primary": {
+      "name": "Koyu Çikolata",
+      "name_en": "Dark Chocolate",
+      "hex": "#3D2314",
+      "rgb": "61, 35, 20",
+      "usage": "Marka ana rengi - logolar, basliklar, vurgu alanlari",
+      "notes": "Premium cikolata tonunu yansitan koyu, zengin kahverengi"
+    },
+    "secondary": {
+      "name": "Krem Bej",
+      "name_en": "Cream Beige",
+      "hex": "#F5F0E8",
+      "rgb": "245, 240, 232",
+      "usage": "Arkaplan, kartlar, secondary yuzeyler",
+      "notes": "Sicak, yumusak bir bej - Kinfolk dergisi sayfa tonu"
+    },
+    "accent": {
+      "name": "Sutlu Altin",
+      "name_en": "Muted Gold",
+      "hex": "#C9A868",
+      "rgb": "201, 168, 104",
+      "usage": "Subtle vurgular, ikonlar, seperatorler - asla dominant olmasin",
+      "notes": "Whisper gold - bağırmayan, inceltilmiş altin tonu"
+    },
+    "neutrals": {
+      "warm_gray": {
+        "name": "Ilik Gri",
+        "name_en": "Warm Gray",
+        "hex": "#B5AFA8",
+        "rgb": "181, 175, 168",
+        "usage": "Border, divider, secondary text",
+        "notes": "Sicak tarafli soft gri - Monocle estetigi"
+      },
+      "stone_gray": {
+        "name": "Taş Grisi",
+        "name_en": "Stone Gray",
+        "hex": "#8A847E",
+        "rgb": "138, 132, 126",
+        "usage": "Tertiary text, subtle backgrounds",
+        "notes": "Dogal tas renginden esinlenilmis"
+      }
+    },
+    "background": {
+      "name": "Sicak Beyaz",
+      "name_en": "Warm White",
+      "hex": "#FDFCFA",
+      "rgb": "253, 252, 250",
+      "usage": "Ana arkaplan - etiket zemin, sayfa arka plani",
+      "notes": "Soguk beyaz degil - sicak, premium hissiyat"
+    },
+    "text": {
+      "primary": {
+        "name": "Koyu Kahve",
+        "name_en": "Deep Coffee",
+        "hex": "#2B1810",
+        "rgb": "43, 24, 16",
+        "usage": "Ana metin - yuksek kontrast, okunaklı",
+        "notes": "Primary color'dan daha koyu - okunabilirlik icin"
+      },
+      "secondary": {
+        "name": "Orta Kahve",
+        "name_en": "Medium Coffee",
+        "hex": "#5C4A3D",
+        "rgb": "92, 74, 61",
+        "usage": "Secondary text, captions, meta bilgi",
+        "notes": "Daha yumusak kontrast - supporting text icin"
+      }
+    }
+  },
+  "color_philosophy": {
+    "principle": "Less is more - renkleri dikkatli kullan",
+    "dominant_ratio": "80% neutral (beyaz/bej/gri), 15% primary (kahverengi), 5% accent (altin)",
+    "competitor_reference": "Vakko Chocolate packaging, Aesop stores, Kinfolk magazine",
+    "avoid": [
+      "Parlak, neon renkler",
+      "Soguk mavi tonlari (premium/luks cikolata icin uygun degil)",
+      "Kirmizi (sık kullanılan discount tonu)",
+      "Cok renkli karmaşık paletler"
+    ]
+  },
+  "technical_notes": {
+    "color_space": "sRGB (web), CMYK icin renk profili olusturulmali",
+    "accessibility": "Text/background kontrast orani WCAG AA standardi saglaniyor",
+    "print": "Pantone karsiliklari belirlenecek (Phase sonrasi)"
+  }
+}
