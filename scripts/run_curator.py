@@ -16,15 +16,20 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv(project_root / ".env")
-
 
 def check_api_key() -> bool:
     """API key kontrolu."""
     import os
+
+    # .env varsa yukle (dotenv opsiyonel)
+    try:
+        from dotenv import load_dotenv
+        env_file = project_root / ".env"
+        if env_file.exists():
+            load_dotenv(env_file)
+    except ImportError:
+        pass  # dotenv kurulu degil, ortam degiskenlerini kullan
+
     key = os.getenv("OPENAI_API_KEY")
     return bool(key and key != "your-api-key-here")
 
@@ -53,15 +58,32 @@ def dry_run() -> None:
         print(f"    - Autonomy: {agent.autonomy_level}")
         print(f"    - Tools: {[t.name for t in agent.tools]}")
 
-        # Skill testi
+        # Skill testi (CrewAI tool'lari .run() ile cagrilir)
         print("\n🎨 Skill testi...\n")
-        bilgi = gorsel_tasarla("Test Urun", "50g", "test aciklama", "bilgi")
+        bilgi = gorsel_tasarla.run(
+            urun_adi="Test Urun",
+            urun_gramaj="50g",
+            urun_aciklama="test aciklama",
+            mod="bilgi"
+        )
         print("  ✓ gorsel_tasarla(mod='bilgi') calisti")
         print(f"    Cikti uzunlugu: {len(bilgi)} karakter")
 
-        prompt = gorsel_tasarla("Test Urun", "50g", "test aciklama", "prompt")
+        prompt = gorsel_tasarla.run(
+            urun_adi="Test Urun",
+            urun_gramaj="50g",
+            urun_aciklama="test aciklama",
+            mod="prompt"
+        )
         print("  ✓ gorsel_tasarla(mod='prompt') calisti")
         print(f"    Prompt uzunlugu: {len(prompt)} karakter")
+
+        # API key kontrolu
+        if check_api_key():
+            print("\n  ✓ OPENAI_API_KEY mevcut")
+        else:
+            print("\n  ⚠ OPENAI_API_KEY eksik veya gecersiz")
+            print("    → .env.example'dan .env olusturun")
 
         print("\n" + "=" * 60)
         print("✅ DRY RUN BASARILI - Tum importlar ve syntax dogru")
