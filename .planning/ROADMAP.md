@@ -20,7 +20,7 @@ None
 - [x] **Phase 4: The Growth Hacker** - Trend takip agenti ve skill'leri (1/1 plan complete) ✅
 - [x] **Phase 5: The Alchemist** - Lezzet/reçete agenti ve skill'leri (1/1 plan complete) ✅
 - [x] **Phase 6: The Curator** - Görsel tasarım agenti ve skill'leri (3/3 plan complete) ✅
-- [ ] **Phase 7: The Perfectionist** - UX denetim agenti ve skill'leri
+- [ ] **Phase 7: The Perfectionist** - UX denetim agenti ve skill'leri (0/2 plans)
 - [ ] **Phase 8: Orkestrasyon** - Chief Architect rolü, agent'lar arası iletişim
 - [ ] **Phase 9: Entegrasyon** - Günlük iş akışına dahil etme
 
@@ -70,10 +70,13 @@ Plans:
 - [x] 06-03-PLAN.md — CuratorAgent ve run scripti ✅
 
 ### Phase 7: The Perfectionist
-**Goal**: UX denetim agenti - Marka tutarlılığı kontrolü, kalite güvence, iyileştirme önerileri
+**Goal**: UX denetim agenti - LLM-as-Judge pattern ile marka tutarlılığı kontrolü, kalite güvence, Türkçe iyileştirme önerileri
 **Depends on**: Phase 1
-**Research**: Unlikely (denetim kalıpları, iç araçlar)
-**Plans**: TBD
+**Research**: Complete (LLM-as-Judge patterns, Generator-Critic, Pydantic structured output)
+**Plans**: 2 plans
+Plans:
+- [ ] 07-01-PLAN.md — AuditResult modeli ve perfectionist skills
+- [ ] 07-02-PLAN.md — PerfectionistAgent ve run scripti
 
 ### Phase 8: Orkestrasyon
 **Goal**: Chief Architect rolü - Agent'lar arası iletişim, görev dağıtımı, workflow koordinasyonu
@@ -102,6 +105,6 @@ Fazlar numerik sırada çalışır: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 
 | 4. The Growth Hacker | 1/1 | Complete | 2026-01-30 |
 | 5. The Alchemist | 1/1 | Complete | 2026-01-30 |
 | 6. The Curator | 3/3 | Complete | 2026-01-30 |
-| 7. The Perfectionist | 0/TBD | Not started | - |
+| 7. The Perfectionist | 0/2 | Planning complete | - |
 | 8. Orkestrasyon | 0/TBD | Not started | - |
 | 9. Entegrasyon | 0/TBD | Not started | - |
