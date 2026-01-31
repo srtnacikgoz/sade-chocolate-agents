@@ -101,11 +101,18 @@ class MarketAnalysisInput(BaseModel):
     Pazar analizi workflow'u giris modeli.
 
     Rakip analizi ve trend arastirmasi icin kullanilir.
-    PricingAnalyst ve opsiyonel olarak GrowthHacker agent'larini icerir.
+    SmartScraper ile GERCEK veri ceker, sonra agent'lar analiz yapar.
+
+    ONEMLI: competitor_url verilmezse GERCEK veri cekilemez!
     """
 
     competitor_name: str = Field(
         description="Analiz edilecek rakip adi (ornegin: 'Vakko', 'Godiva')"
+    )
+    competitor_url: Optional[str] = Field(
+        default=None,
+        description="Rakip web sitesi URL'i (ornegin: 'https://marieantoinette.com.tr/'). "
+                    "GERCEK fiyat verisi cekmek icin ZORUNLU!"
     )
     product_category: str = Field(
         default="premium chocolate",
@@ -119,7 +126,8 @@ class MarketAnalysisInput(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "competitor_name": "Vakko",
+                "competitor_name": "Marie Antoinette",
+                "competitor_url": "https://marieantoinette.com.tr/",
                 "product_category": "premium chocolate",
                 "include_trends": True
             }

@@ -2,17 +2,50 @@
 Sade Agents - Pazar Analizi Sayfasi.
 
 MarketAnalysisCrew'u calistirmak icin form ve sonuc gorunumu.
+
+AKILLI SİSTEM:
+- Rakipler config'den (scraping_targets.json) yuklenir
+- URL otomatik doldurulur
+- GERCEK veri cekilir, LLM hayal gucu DEGIL!
 """
 
 import streamlit as st
 
 
+def _load_competitors() -> dict[str, str]:
+    """
+    Config'den rakip listesini yukler.
+
+    Returns:
+        {rakip_adi: url} dict'i
+    """
+    from sade_agents.scrapers import load_targets_from_config
+
+    targets = load_targets_from_config()
+    return {t.name: t.url for t in targets}
+
+
 def render() -> None:
     """Pazar analizi sayfasini render eder."""
     st.title("📊 Pazar Analizi")
-    st.markdown("Rakip fiyatlarini analiz edin ve pazarlama stratejisi olusturun.")
+    st.markdown("""
+    Rakip fiyatlarini **GERCEK VERİYLE** analiz edin.
+
+    > **Nasil calisir:** SmartScraper rakibin web sitesini tarar,
+    > gercek fiyatlari ceker, sonra AI agent'lar bu verileri analiz eder.
+    """)
 
     st.markdown("---")
+
+    # Config'den rakipleri yukle
+    competitors = _load_competitors()
+
+    if not competitors:
+        st.warning(
+            "Henuz rakip tanimlanmamis! "
+            "'Rakipler' sayfasindan rakip ekleyin veya scraping_targets.json dosyasini duzenleyin."
+        )
+        return
 
     # Form
     with st.form("market_analysis_form"):
@@ -21,19 +54,25 @@ def render() -> None:
         col1, col2 = st.columns(2)
 
         with col1:
+            # Rakip secimi (config'den)
+            competitor_options = list(competitors.keys())
             competitor_name = st.selectbox(
                 "Rakip *",
-                options=[
-                    "Vakko",
-                    "Godiva",
-                    "Lindt",
-                    "Butterfly",
-                    "Divan",
-                    "Marie Antoinette",
-                    "Kahve Dunyasi",
-                ],
-                help="Analiz edilecek rakip",
+                options=competitor_options,
+                help="Analiz edilecek rakip (config'den yuklendi)",
             )
+
+            # URL otomatik doldurulur
+            if competitor_name:
+                competitor_url = competitors.get(competitor_name, "")
+                st.text_input(
+                    "Web Sitesi URL",
+                    value=competitor_url,
+                    disabled=True,
+                    help="URL config'den otomatik yuklendi",
+                )
+            else:
+                competitor_url = ""
 
             product_category = st.selectbox(
                 "Urun Kategorisi",
@@ -54,19 +93,29 @@ def render() -> None:
                 help="GrowthHacker agent ile trend analizi yapilsin mi",
             )
 
+            st.info(
+                "💡 **GERCEK VERİ:** Bu analiz rakibin web sitesinden "
+                "cekilen gercek fiyatlara dayanir."
+            )
+
         st.markdown("---")
 
         submitted = st.form_submit_button(
-            "📊 Analizi Baslat",
+            "📊 Analizi Baslat (Gercek Veri ile)",
             use_container_width=True,
             type="primary",
         )
 
     # Form gonderildiginde
     if submitted:
+        if not competitor_url:
+            st.error("Rakip URL'i bulunamadi! Rakipler sayfasindan URL ekleyin.")
+            return
+
         # Giris verilerini hazirla (MarketAnalysisInput formatinda)
         inputs = {
             "competitor_name": competitor_name,
+            "competitor_url": competitor_url,  # GERCEK VERİ icin ZORUNLU!
             "product_category": product_category,
             "include_trends": include_trends,
         }
@@ -78,7 +127,7 @@ def render() -> None:
 def _run_crew(inputs: dict) -> None:
     """MarketAnalysisCrew'u calistirir ve sonucu gosterir."""
     st.markdown("---")
-    st.subheader("Pazar Analizi Yapiliyor...")
+    st.subheader("🔍 Pazar Analizi Yapiliyor...")
 
     progress = st.progress(0)
     status = st.empty()
@@ -86,7 +135,7 @@ def _run_crew(inputs: dict) -> None:
     try:
         # Config yukle
         status.text("Yapilandirma yukleniyor...")
-        progress.progress(10)
+        progress.progress(5)
 
         from sade_agents.config import get_settings
 
@@ -98,7 +147,7 @@ def _run_crew(inputs: dict) -> None:
 
         # Crew'u yukle
         status.text("Crew hazirlaniyor...")
-        progress.progress(20)
+        progress.progress(10)
 
         from sade_agents.crews import SadeCrewFactory
 
@@ -106,8 +155,18 @@ def _run_crew(inputs: dict) -> None:
         crew = factory.create_crew("market_analysis")
 
         # Crew'u calistir
-        status.text("AI agentlar calisiyor (bu birkaç dakika surebilir)...")
+        competitor_url = inputs.get("competitor_url", "")
+        status.text(f"🌐 Web sitesi taranıyor: {competitor_url[:50]}...")
+        progress.progress(20)
+
+        status.text("🔍 Ürün sayfaları keşfediliyor (sitemap, menü analizi)...")
+        progress.progress(30)
+
+        status.text("📦 Ürün ve fiyat bilgileri çekiliyor...")
         progress.progress(40)
+
+        status.text("🤖 AI agentlar GERÇEK VERİYİ analiz ediyor...")
+        progress.progress(50)
 
         result = crew.kickoff(inputs=inputs)
 

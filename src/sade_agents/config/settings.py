@@ -36,6 +36,7 @@ class Settings(BaseSettings):
 
     # Scraping
     scraping_timeout_seconds: int = 30
+    scraping_targets_file: str = "scraping_targets.json"  # Hedefler bu dosyadan okunur
 
     # Tenant (multi-tenant SaaS hazirlik)
     app_default_tenant_id: str = "default"
