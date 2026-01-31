@@ -41,6 +41,15 @@ class Settings(BaseSettings):
     # Tenant (multi-tenant SaaS hazirlik)
     app_default_tenant_id: str = "default"
 
+    # Reddit API (Growth Hacker icin)
+    reddit_client_id: str | None = None
+    reddit_client_secret: str | None = None
+    reddit_user_agent: str = "SadeAgents/1.0 (by /u/sadechocolate)"
+
+    def is_reddit_configured(self) -> bool:
+        """Reddit API yapilandirmasinin tamamlanip tamamlanmadigini kontrol eder."""
+        return bool(self.reddit_client_id and self.reddit_client_secret)
+
     def validate_api_key(self) -> bool:
         """API key'in ayarlanip ayarlanmadigini kontrol eder."""
         return bool(self.openai_api_key and self.openai_api_key != "your-api-key-here")

@@ -20,7 +20,7 @@ from sade_agents.skills.codegen_skills import (
 )
 from sade_agents.skills.curator_skills import gorsel_tasarla
 from sade_agents.skills.design_skills import fetch_figma_design, extract_design_tokens
-from sade_agents.skills.growth_skills import sosyal_nabiz
+from sade_agents.skills.growth_skills import sosyal_nabiz, reddit_ara
 from sade_agents.skills.narrator_skills import hikayelestir
 from sade_agents.skills.perfectionist_skills import denetle, stil_kilavuzu_yukle, onaylanmis_ornekler_yukle
 from sade_agents.skills.pricing_skills import fiyat_kontrol
@@ -36,6 +36,7 @@ __all__: list[str] = [
     "lezzet_pisileri",
     "load_reference_examples",
     "onaylanmis_ornekler_yukle",
+    "reddit_ara",
     "sosyal_nabiz",
     "stil_kilavuzu_yukle",
     "verify_generated_code",
