@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 2 of 3 (Real Scraping)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-01-31 — Completed 02-01-PLAN.md (SmartScraper Unit Tests)
+Last activity: 2026-01-31 — Completed 02-02-PLAN.md (AIScraper Unit Tests)
 
-Progress: ██████████░░░░░░░░░░ 50% (Phase 2: 1/3 plans complete)
+Progress: ███████████████░░░░░ 67% (Phase 2: 2/3 plans complete)
 
 ## Performance Metrics
 
@@ -46,6 +46,8 @@ Progress: ██████████░░░░░░░░░░ 50% (Phas
 | 02-01 | pytest-asyncio auto mode | Simplifies async testing, automatic test detection | Active |
 | 02-01 | Mock all external calls | Unit tests fast, deterministic, offline-runnable | Active |
 | 02-01 | lxml for XML parsing | BeautifulSoup needs proper XML parser for sitemap tests | Active |
+| 02-02 | Firebase exception handling test | Runtime import makes full mock complex, test error handling | Active |
+| 02-02 | pytest-asyncio auto mode | Async test auto-detection, no manual marks needed | Active |
 
 Prior decisions logged in PROJECT.md Key Decisions table.
 v1.0 validated all initial decisions as "Good".
@@ -68,6 +70,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 02-01-PLAN.md (SmartScraper Unit Tests)
+Stopped at: Completed 02-02-PLAN.md (AIScraper Unit Tests)
 Resume file: None
-Next action: Execute 02-02-PLAN.md (next plan in Phase 2)
+Next action: Execute 02-03-PLAN.md (next plan in Phase 2)
