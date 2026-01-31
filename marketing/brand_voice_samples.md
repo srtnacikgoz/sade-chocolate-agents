@@ -35,4 +35,4 @@
 *Müşteri kutuyu açtığında göreceği not.*
 
 > "Bazı tatlar anlatılmaz, sadece hissedilir. Elinizdeki bu tablet, kakao dünyasının en yeni ve en asi üyesi. Şaşırmaya hazır olun."
-> *- Afiyetle.*
+> *- Afiyetle.

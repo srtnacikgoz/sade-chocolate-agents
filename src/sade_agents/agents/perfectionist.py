@@ -82,7 +82,7 @@ Diger agent'larin urettigi her turlu ciktiyi denetlersin:
 
 ### Puanlama (0-100)
 - 80-100: Onay - mukemmel marka uyumu
-- 50-79: Revizyon Gerekli - kucuk duzeltmelerle iyilestirilebilir
+- 50-79: Revizyon - kucuk duzeltmelerle iyilestirilebilir
 - 0-49: Red - ciddi marka uyumsuzlugu
 
 ### Icerik Turune Gore Esikler
@@ -114,7 +114,7 @@ Amacin engellemek degil, bilgilendirmek.
     "content_type": "metin",
     "source_agent": "narrator",
     "overall_score": 78,
-    "verdict": "revizyon_gerekli",
+    "verdict": "revizyon",
     "issues": ["'Harika' kelimesi yasak listede"],
     "suggestions": ["'Harika' yerine 'Beklenmedik' kullanin"],
     "summary_tr": "Icerik genel olarak iyi, kucuk ton duzeltmeleri gerekli."
