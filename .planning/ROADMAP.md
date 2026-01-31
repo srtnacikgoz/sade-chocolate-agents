@@ -17,11 +17,11 @@
 **Plans:** 5 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Reference Component Library (card, form, data_table ornekleri)
-- [ ] 01-02-PLAN.md — Design Skills (Figma MCP entegrasyonu)
-- [ ] 01-03-PLAN.md — Codegen Skills (kod uretim + verification tools)
-- [ ] 01-04-PLAN.md — UI Expert Agent (SadeAgent extension)
-- [ ] 01-05-PLAN.md — UI Generator Page + Integration Test
+- [x] 01-01-PLAN.md — Reference Component Library (card, form, data_table ornekleri)
+- [x] 01-02-PLAN.md — Design Skills (Figma MCP entegrasyonu)
+- [x] 01-03-PLAN.md — Codegen Skills (kod uretim + verification tools)
+- [x] 01-04-PLAN.md — UI Expert Agent (SadeAgent extension)
+- [x] 01-05-PLAN.md — UI Generator Page + Integration Test
 
 **Details:**
 - Figma MCP entegrasyonu
@@ -31,17 +31,21 @@ Plans:
 
 ### Phase 2: Real Scraping
 
-**Goal:** AI-destekli akıllı web scraping sistemi
+**Goal:** AI-destekli akıllı web scraping sistemi - test, entegrasyon ve commit
 **Depends on:** Phase 1 (optional)
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 2 to break down)
+- [ ] 02-01-PLAN.md — SmartScraper unit testleri
+- [ ] 02-02-PLAN.md — AIScraper ve target loading testleri
+- [ ] 02-03-PLAN.md — UI entegrasyonu ve commit
 
 **Details:**
-- SmartScraper (site keşfi, paralel tarama)
-- AIScraper (AI ile veri çıkarma)
-- Rakip yönetimi UI
+- SmartScraper (site keşfi, paralel tarama) - KOD YAZILDI
+- AIScraper (AI ile veri çıkarma) - KOD YAZILDI
+- Rakip yönetimi UI - KOD YAZILDI
+- Unit testler - YAZILACAK
+- Commit - YAPILACAK
 
 **Note:** Kod yazılmış, commit edilmemiş - test ve entegrasyon gerekli
 
@@ -82,7 +86,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. UI Expert Agent | v1.1 | 5/5 | ✓ Complete | 2026-01-31 |
-| 2. Real Scraping | v1.1 | 0/? | Not Started | - |
+| 2. Real Scraping | v1.1 | 0/3 | Planning Complete | - |
 | 3. Social Media | v1.1 | 0/? | Not Started | - |
 
 ## Domain Expertise
