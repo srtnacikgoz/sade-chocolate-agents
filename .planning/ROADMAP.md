@@ -3,8 +3,58 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 1-9 (shipped 2026-01-30)
-- 📋 **v1.1 Real APIs** — Planned (web scraping, social media integrations)
+- 🚧 **v1.1 Real APIs** — IN PROGRESS (UI Expert, web scraping, integrations)
 - 📋 **v2.0 Website** — Planned (sadechocolate.com integration)
+
+## Current Milestone: v1.1 Real APIs
+
+**Goal:** Mock data'dan gerçek API'lere geçiş, UI Expert Agent, web scraping
+
+### Phase 1: UI Expert Agent
+
+**Goal:** Figma tasarimlarindan Streamlit component ureten AI agent - reference library + verification ile hallucination-free kod uretimi
+**Depends on:** Nothing (first phase)
+**Plans:** 5 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Reference Component Library (card, form, data_table ornekleri)
+- [ ] 01-02-PLAN.md — Design Skills (Figma MCP entegrasyonu)
+- [ ] 01-03-PLAN.md — Codegen Skills (kod uretim + verification tools)
+- [ ] 01-04-PLAN.md — UI Expert Agent (SadeAgent extension)
+- [ ] 01-05-PLAN.md — UI Generator Page + Integration Test
+
+**Details:**
+- Figma MCP entegrasyonu
+- Tasarim -> Streamlit kod donusumu
+- Component library olusturma
+- Verification mekanizmasi (hallucination kontrolu)
+
+### Phase 2: Real Scraping
+
+**Goal:** AI-destekli akıllı web scraping sistemi
+**Depends on:** Phase 1 (optional)
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 2 to break down)
+
+**Details:**
+- SmartScraper (site keşfi, paralel tarama)
+- AIScraper (AI ile veri çıkarma)
+- Rakip yönetimi UI
+
+**Note:** Kod yazılmış, commit edilmemiş - test ve entegrasyon gerekli
+
+### Phase 3: Social Media Integrations
+
+**Goal:** Sosyal medya API entegrasyonları
+**Depends on:** Phase 2
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD
+
+---
 
 ## Completed Milestones
 
@@ -31,15 +81,9 @@
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 1. Temel Altyapi | v1.0 | 3/3 | Complete | 2026-01-30 |
-| 2. The Narrator | v1.0 | 2/2 | Complete | 2026-01-30 |
-| 3. The Pricing Analyst | v1.0 | 3/3 | Complete | 2026-01-30 |
-| 4. The Growth Hacker | v1.0 | 1/1 | Complete | 2026-01-30 |
-| 5. The Alchemist | v1.0 | 1/1 | Complete | 2026-01-30 |
-| 6. The Curator | v1.0 | 3/3 | Complete | 2026-01-30 |
-| 7. The Perfectionist | v1.0 | 2/2 | Complete | 2026-01-30 |
-| 8. Orkestrasyon | v1.0 | 3/3 | Complete | 2026-01-30 |
-| 9. Entegrasyon | v1.0 | 1/1 | Complete | 2026-01-30 |
+| 1. UI Expert Agent | v1.1 | 0/5 | Planned | - |
+| 2. Real Scraping | v1.1 | 0/? | Not Started | - |
+| 3. Social Media | v1.1 | 0/? | Not Started | - |
 
 ## Domain Expertise
 
