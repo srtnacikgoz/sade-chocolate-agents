@@ -14,6 +14,7 @@ Skill kategorileri:
 
 from sade_agents.skills.alchemist_skills import lezzet_pisileri
 from sade_agents.skills.curator_skills import gorsel_tasarla
+from sade_agents.skills.design_skills import fetch_figma_design, extract_design_tokens
 from sade_agents.skills.growth_skills import sosyal_nabiz
 from sade_agents.skills.narrator_skills import hikayelestir
 from sade_agents.skills.perfectionist_skills import denetle, stil_kilavuzu_yukle, onaylanmis_ornekler_yukle
@@ -21,6 +22,8 @@ from sade_agents.skills.pricing_skills import fiyat_kontrol
 
 __all__: list[str] = [
     "denetle",
+    "extract_design_tokens",
+    "fetch_figma_design",
     "fiyat_kontrol",
     "gorsel_tasarla",
     "hikayelestir",
