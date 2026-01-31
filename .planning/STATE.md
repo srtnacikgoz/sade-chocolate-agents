@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-30)
 
 **Core value:** Her cikti ozgun Sade gibi duyulmali — tum departman ve temas noktalarinda tutarli marka sesi.
-**Current focus:** v1.1 Phase 1 - UI Expert Agent
+**Current focus:** v1.1 Phase 2 - Real Scraping
 
 ## Current Position
 
-Phase: 1 of 3 (UI Expert Agent)
-Plan: 5 of 5 complete
-Status: Phase 1 complete
-Last activity: 2026-01-31 — Completed 01-05-PLAN.md (UI Expert Agent)
+Phase: 2 of 3 (Real Scraping)
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-01-31 — Completed 02-01-PLAN.md (SmartScraper Unit Tests)
 
-Progress: █████████░ 100% (Phase 1 complete - 5/5 plans)
+Progress: ██████████░░░░░░░░░░ 50% (Phase 2: 1/3 plans complete)
 
 ## Performance Metrics
 
@@ -43,6 +43,9 @@ Progress: █████████░ 100% (Phase 1 complete - 5/5 plans)
 | 01-04 | Supervised autonomy level | Generated code requires human review before deployment | Active |
 | 01-04 | Verification threshold: 80 | Balances quality with iteration count | Active |
 | 01-04 | Max iterations: 3 | Prevents infinite loops while allowing refinement | Active |
+| 02-01 | pytest-asyncio auto mode | Simplifies async testing, automatic test detection | Active |
+| 02-01 | Mock all external calls | Unit tests fast, deterministic, offline-runnable | Active |
+| 02-01 | lxml for XML parsing | BeautifulSoup needs proper XML parser for sitemap tests | Active |
 
 Prior decisions logged in PROJECT.md Key Decisions table.
 v1.0 validated all initial decisions as "Good".
@@ -65,6 +68,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 01-05-PLAN.md (UI Expert Agent)
+Stopped at: Completed 02-01-PLAN.md (SmartScraper Unit Tests)
 Resume file: None
-Next action: Execute Phase 2 - Real Scraping (02-01-PLAN.md)
+Next action: Execute 02-02-PLAN.md (next plan in Phase 2)
