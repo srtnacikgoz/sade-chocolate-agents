@@ -26,9 +26,13 @@ class ProductLaunchInput(BaseModel):
         default="Quiet luxury consumers",
         description="Hedef kitle segmenti"
     )
-    price_range: tuple[float, float] = Field(
-        default=(100.0, 200.0),
-        description="Minimum ve maksimum fiyat araligi (TL)"
+    price_range_min: float = Field(
+        default=100.0,
+        description="Minimum fiyat (TL)"
+    )
+    price_range_max: float = Field(
+        default=200.0,
+        description="Maksimum fiyat (TL)"
     )
     include_audit: bool = Field(
         default=True,
@@ -40,7 +44,8 @@ class ProductLaunchInput(BaseModel):
             "example": {
                 "flavor_concept": "Antep Fistikli",
                 "target_audience": "Quiet luxury consumers",
-                "price_range": (150.0, 200.0),
+                "price_range_min": 150.0,
+                "price_range_max": 200.0,
                 "include_audit": True
             }
         }

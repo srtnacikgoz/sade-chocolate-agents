@@ -21,9 +21,19 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
+    # Core
     "crewai>=0.86.0",
     "python-dotenv>=1.0.0",
     "pydantic-settings>=2.0.0",
+    # Web UI
+    "streamlit>=1.30.0",
+    # Firebase/Firestore
+    "google-cloud-firestore>=2.15.0",
+    "firebase-admin>=6.4.0",
+    # Scraping
+    "aiohttp>=3.9.0",
+    "beautifulsoup4>=4.12.0",
+    "tenacity>=8.2.0",
 ]
 
 [project.optional-dependencies]

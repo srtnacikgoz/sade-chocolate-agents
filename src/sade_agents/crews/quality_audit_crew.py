@@ -58,7 +58,7 @@ Cikti formati (AuditResult):
 - tone_score: Ton puani
 - vocabulary_score: Kelime puani
 - structure_score: Yapi puani
-- verdict: onay/revizyon/ret
+- verdict: onay/revizyon/red
 - issues: Tespit edilen sorunlar listesi
 - suggestions: Iyilestirme onerileri
 - summary_tr: Turkce ozet
@@ -90,7 +90,15 @@ Cikti formati (AuditResult):
         )
 
         start_time = time.time()
-        result = crew.kickoff(inputs=inputs)
+
+        # Input Sanitization: CrewAI sadece scalar tipler kabul eder
+        crewai_inputs = {
+            "content": str(inputs.get("content", "")),
+            "content_type": str(inputs.get("content_type", "metin")),
+            "source_agent": str(inputs.get("source_agent", "narrator")),
+        }
+
+        result = crew.kickoff(inputs=crewai_inputs)
         elapsed = time.time() - start_time
 
         # Get threshold for pass/fail determination

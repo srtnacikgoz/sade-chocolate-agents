@@ -27,8 +27,8 @@ class AuditResult(BaseModel):
     structure_score: int = Field(ge=0, le=100, description="Yapi uyumu puani")
 
     # Karar
-    verdict: Literal["onay", "revizyon_gerekli", "red"] = Field(
-        description="onay: 80+, revizyon_gerekli: 50-79, red: <50"
+    verdict: Literal["onay", "revizyon", "red"] = Field(
+        description="onay: 80+, revizyon: 50-79, red: <50"
     )
 
     # Geri bildirim
@@ -45,7 +45,7 @@ class AuditResult(BaseModel):
                 "tone_score": 85,
                 "vocabulary_score": 70,
                 "structure_score": 80,
-                "verdict": "revizyon_gerekli",
+                "verdict": "revizyon",
                 "issues": ["'Harika' kelimesi yasak listede"],
                 "suggestions": ["'Harika' yerine 'Beklenmedik' kullanin"],
                 "summary_tr": "Icerik genel olarak iyi, kucuk ton duzeltmeleri gerekli."

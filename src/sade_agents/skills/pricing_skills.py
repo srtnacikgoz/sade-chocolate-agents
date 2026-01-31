@@ -1,176 +1,193 @@
 """
-Sade Agents - The Pricing Analyst Skills.
+Sade Agents - Pricing Analyst Skills.
 
-The Pricing Analyst agent'ın kullandığı skill'ler.
-Rekabet istihbaratı ve fiyat analizi yetenekleri.
+The Pricing Analyst agent'in finansal zekasi.
+Rakip istihbarati (Competitor Watchdog) ve dinamik fiyatlandirma motoru.
+
+Competitors:
+- Vakko L'Atelier (Pazar Lideri - Referans)
+- Butterfly (Butik Rakip)
+- Marie Antoinette (Nis/Ozel)
+- Baylan (Klasik Luks)
+- Divan (Giris Seviyesi Bariyer)
 """
 
+import asyncio
+from typing import Any, Dict, List, Optional
 from crewai.tools import tool
 
+# -------------------------------------------------------------------------
+# CONSTANTS & CONFIG
+# -------------------------------------------------------------------------
 
-# Mock fiyat verileri (gerçek scraping ileride eklenebilir)
+# Jewel Fee: Tekli ve ozel urunler icin uygulanan "Sanat Eseri" primi
+JEWEL_FEE_MULTIPLIER = 1.25  # %25 Premium
+
+# Hammadde maliyetleri (TL/kg - Mock, Phase 2'de ERP'den gelecek)
+COST_BASE = {
+    "kakao_ruby": 650.0,    # Ruby cikolata hammadesi
+    "kakao_bitter": 450.0,
+    "kakao_sutlu": 420.0,
+    "fistik_antep": 1100.0, # Boz fistik
+    "ambalaj_luks": 85.0,   # Kutu basi maliyet
+}
+
+# -------------------------------------------------------------------------
+# MOCK DATA (Fallback)
+# -------------------------------------------------------------------------
+# Gercek scraping kapaliysa veya hata verirse kullanilacak guncel veriler.
+# Tarih: 30.01.2026
 RAKIP_FIYATLARI = {
     "vakko": [
-        {"urun": "Vakko Sütlü Tablet", "gramaj": 100, "fiyat": 450, "tl_gram": 4.50},
-        {"urun": "Vakko Bitter %70", "gramaj": 100, "fiyat": 480, "tl_gram": 4.80},
-        {"urun": "Vakko Fındıklı", "gramaj": 80, "fiyat": 420, "tl_gram": 5.25},
-        {"urun": "Vakko Ruby", "gramaj": 85, "fiyat": 520, "tl_gram": 6.12},
+        {"urun": "Vakko Pralin (Kutu)", "gramaj": 250, "fiyat": 2900, "tl_gram": 11.60},
+        {"urun": "Vakko Tablet", "gramaj": 100, "fiyat": 950, "tl_gram": 9.50},
     ],
     "butterfly": [
-        {"urun": "Butterfly Bitter %55", "gramaj": 80, "fiyat": 320, "tl_gram": 4.00},
-        {"urun": "Butterfly Sütlü", "gramaj": 80, "fiyat": 300, "tl_gram": 3.75},
-        {"urun": "Butterfly Karamelli", "gramaj": 75, "fiyat": 340, "tl_gram": 4.53},
-    ],
-    "divan": [
-        {"urun": "Divan Fındıklı Tablet", "gramaj": 90, "fiyat": 280, "tl_gram": 3.11},
-        {"urun": "Divan Sütlü Tablet", "gramaj": 90, "fiyat": 260, "tl_gram": 2.89},
-        {"urun": "Divan Bitter", "gramaj": 85, "fiyat": 270, "tl_gram": 3.18},
-    ],
-    "baylan": [
-        {"urun": "Baylan Klasik Sütlü", "gramaj": 100, "fiyat": 180, "tl_gram": 1.80},
-        {"urun": "Baylan Bitter", "gramaj": 100, "fiyat": 200, "tl_gram": 2.00},
+        {"urun": "Butterfly Kesif Serisi", "gramaj": 140, "fiyat": 1486, "tl_gram": 10.62},
+        {"urun": "Butterfly Tablet", "gramaj": 80, "fiyat": 750, "tl_gram": 9.37},
     ],
     "marie_antoinette": [
-        {"urun": "Marie Antoinette Truffle Box", "gramaj": 120, "fiyat": 850, "tl_gram": 7.08},
-        {"urun": "Marie Antoinette Single Origin", "gramaj": 70, "fiyat": 620, "tl_gram": 8.86},
+        {"urun": "MA Ozel Koleksiyon", "gramaj": 200, "fiyat": 1900, "tl_gram": 9.50},
+    ],
+    "baylan": [
+        {"urun": "Baylan Klasik", "gramaj": 300, "fiyat": 2550, "tl_gram": 8.50},
+    ],
+    "divan": [
+        {"urun": "Divan Arduaz", "gramaj": 250, "fiyat": 1150, "tl_gram": 4.60},
+        {"urun": "Divan Pralin", "gramaj": 250, "fiyat": 1930, "tl_gram": 7.72},
     ],
 }
 
+# -------------------------------------------------------------------------
+# CORE FUNCTIONS
+# -------------------------------------------------------------------------
 
-def _format_rakip_verileri(rakip: str) -> str:
-    """Rakip verilerini tablo formatında döner."""
-    if rakip == "tumu":
-        rakipler = list(RAKIP_FIYATLARI.keys())
-    elif rakip in RAKIP_FIYATLARI:
-        rakipler = [rakip]
-    else:
-        valid_options = "vakko, butterfly, divan, baylan, marie_antoinette, tumu"
-        return f"Bilinmeyen rakip: {rakip}. Geçerli seçenekler: {valid_options}"
+def _calculate_jewel_price(base_price: float) -> float:
+    """
+    Sade'nin 'Jewel Fee' stratejisini uygular.
+    Tekli, ozel ve el yapimi urunlere %25 'Sanat Eseri' primi ekler.
+    """
+    return base_price * JEWEL_FEE_MULTIPLIER
 
-    lines = ["## Rakip Fiyat Verileri\n"]
-    lines.append("| Rakip | Ürün | Gramaj | Fiyat (TL) | TL/Gram |")
-    lines.append("|-------|------|--------|------------|---------|")
+def _get_competitor_data(source: str = "mock") -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Rakip fiyat verilerini getirir.
+    Phase 2'de buraya 'scrapers' modulu baglanacak.
+    """
+    # Simdilik sadece mock donduruyoruz, ama yapi hazir.
+    return RAKIP_FIYATLARI
 
-    for r in rakipler:
-        for urun in RAKIP_FIYATLARI[r]:
-            rakip_ad = r.title()
-            urun_ad = urun["urun"]
-            gramaj = urun["gramaj"]
-            fiyat = urun["fiyat"]
-            tl_gram = urun["tl_gram"]
-            lines.append(f"| {rakip_ad} | {urun_ad} | {gramaj}g | {fiyat} TL | {tl_gram:.2f} |")
-
+def _format_price_table(data: Dict[str, List[Dict[str, Any]]]) -> str:
+    """Veriyi Markdown tablosuna cevirir."""
+    lines = ["| Marka | Ürün | Gramaj | Fiyat | TL/Gr |", "|---|---|---|---|---|"]
+    
+    for brand, products in data.items():
+        brand_name = brand.replace("_", " ").title()
+        for p in products:
+            lines.append(
+                f"| {brand_name} | {p['urun']} | {p['gramaj']}g | {p['fiyat']} TL | **{p['tl_gram']:.2f}** |"
+            )
     return "\n".join(lines)
 
+# -------------------------------------------------------------------------
+# TOOLS (Exposed to Agent)
+# -------------------------------------------------------------------------
 
-def _hesapla_ozet_istatistikler() -> str:
-    """Tüm rakipler için özet istatistikler hesaplar."""
-    tum_fiyatlar = []
-    for rakip, urunler in RAKIP_FIYATLARI.items():
-        for urun in urunler:
-            tum_fiyatlar.append({
-                "rakip": rakip,
-                "urun": urun["urun"],
-                "tl_gram": urun["tl_gram"],
-            })
-
-    # Sırala
-    sirali = sorted(tum_fiyatlar, key=lambda x: x["tl_gram"])
-    en_ucuz = sirali[0]
-    en_pahali = sirali[-1]
-
-    # Ortalama
-    ortalama = sum(x["tl_gram"] for x in tum_fiyatlar) / len(tum_fiyatlar)
-
-    ucuz_urun = en_ucuz["urun"]
-    ucuz_rakip = en_ucuz["rakip"].title()
-    ucuz_fiyat = en_ucuz["tl_gram"]
-    pahali_urun = en_pahali["urun"]
-    pahali_rakip = en_pahali["rakip"].title()
-    pahali_fiyat = en_pahali["tl_gram"]
-
-    lines = [
-        "\n## Özet İstatistikler\n",
-        f"- **En ucuz:** {ucuz_urun} ({ucuz_rakip}) - {ucuz_fiyat:.2f} TL/g",
-        f"- **En pahalı:** {pahali_urun} ({pahali_rakip}) - {pahali_fiyat:.2f} TL/g",
-        f"- **Pazar ortalaması:** {ortalama:.2f} TL/g",
-    ]
-
-    return "\n".join(lines)
-
-
-@tool
+@tool("fiyat_kontrol")
 def fiyat_kontrol(rakip: str = "tumu") -> str:
     """
-    Rakip çikolata markalarının fiyatlarını kontrol eder ve analiz için veri sağlar.
-
-    Bu tool premium çikolata pazarındaki rakiplerin fiyatlarını TL/gram bazında
-    karşılaştırır. Şu anda mock veriler kullanıyor, ileride gerçek web scraping
-    ile güncellenebilir.
-
+    Rakip fiyatlarini analiz eder. 'Magic Word' tetikleyicisi: /fiyat_kontrol
+    
     Args:
-        rakip: Kontrol edilecek rakip. Seçenekler:
-               - "vakko" - Vakko Chocolate
-               - "butterfly" - Butterfly Chocolate
-               - "divan" - Divan
-               - "baylan" - Baylan
-               - "marie_antoinette" - Marie Antoinette (Zorlu)
-               - "tumu" (default) - Tüm rakipler
-
+        rakip (str): 'vakko', 'butterfly', 'divan' veya 'tumu'.
+    
     Returns:
-        Rakip fiyat raporu: TL/gram bazında karşılaştırma tablosu ve analiz prompt'u
-
-    Kullanım:
-        fiyat_kontrol()  # Tüm rakipler
-        fiyat_kontrol("vakko")  # Sadece Vakko
+        str: Rakip fiyat tablosu ve Sade icin stratejik oneri.
     """
-    # Fiyat verilerini formatla
-    veri_tablosu = _format_rakip_verileri(rakip)
-
-    # Özet istatistikler
-    if rakip == "tumu":
-        ozet = _hesapla_ozet_istatistikler()
+    all_data = _get_competitor_data()
+    
+    # Filtreleme
+    if rakip and rakip != "tumu":
+        if rakip in all_data:
+            filtered_data = {rakip: all_data[rakip]}
+        else:
+            return f"HATA: '{rakip}' listemizde yok. (Gecerli: vakko, butterfly, divan...)"
     else:
-        ozet = ""
+        filtered_data = all_data
 
-    # Analiz prompt template
-    prompt_template = f"""
-{veri_tablosu}
-{ozet}
+    table = _format_price_table(filtered_data)
+    
+    # Analiz Promptu (Agent'in yorumlamasi icin)
+    analysis = f"""
+    ## 📊 FİYAT ANALİZ RAPORU
+    
+    {table}
+    
+    ---
+    ### 🧠 Stratejik Konumlandirma (Sade Chocolate)
+    
+    **Hedef:** "Ulasilabilir Luks" degil, "Sessiz Luks".
+    **Referans:** Vakko'nun hemen alti, Divan'in cok ustu.
+    
+    **Maliyet Notu:**
+    - Hammadde artis trendi var (Kakao +%15).
+    - 'Jewel Fee' (%25 Prim) el yapimi urunlerde uygulanmali.
+    
+    Bu tabloya bakarak:
+    1. Sade'nin 100g Tablet fiyati ne olmali?
+    2. Hangi rakipler "Tehlikeli" derecede ucuzladi?
+    3. Zam yapma zamani geldi mi?
+    """
+    
+    return analysis
 
----
-
-## ANALİZ TALİMATLARI
-
-Yukarıdaki rakip fiyat verilerini analiz et ve şu soruları yanıtla:
-
-### 1. Pazar Konumlandırması
-- Premium segment (>5 TL/g): Hangi rakipler?
-- Orta segment (3-5 TL/g): Hangi rakipler?
-- Ekonomik segment (<3 TL/g): Hangi rakipler?
-
-### 2. Sade İçin Öneriler
-Sade Chocolate'ın hedefi:
-- TL/gram: 4.50-5.50 TL arası
-- Marka primi: 1.5x (Hammadde + Lojistik + Ambalaj)
-- Pozisyon: Premium ama en pahalı değil
-
-Bu verilere göre:
-- Sade hangi rakiplerle doğrudan rekabet ediyor?
-- Önerilen fiyat aralığı ne olmalı?
-- Zam/indirim yapılmalı mı?
-
-### 3. Dikkat Edilecek Sinyaller
-- Vakko zam yaptı mı? (Referans fiyat değişimi)
-- Yeni ürün lansmanları var mı?
-- Fiyat savaşı riski var mı?
-
----
-
-**NOT:** Bu veriler mock verilerdir. Gerçek fiyatlar için web sitelerini kontrol edin.
-"""
-
-    return prompt_template
-
-
-__all__ = ["fiyat_kontrol"]
+@tool("maliyet_analizi")
+def maliyet_analizi(urun_tipi: str, gramaj: int) -> str:
+    """
+    Bir urunun tahmini maliyetini ve satis fiyatini hesaplar.
+    
+    Args:
+        urun_tipi (str): 'ruby_tablet', 'fistikli_bar', etc.
+        gramaj (int): Urunun net agirligi.
+    """
+    # Basit maliyet hesaplama (Ornek)
+    # Phase 2'de dinamik recete motoruna baglanacak.
+    
+    base_cost = 0.0
+    
+    if "ruby" in urun_tipi.lower():
+        # Ruby maliyeti: 650 TL/kg -> 0.65 TL/g
+        raw_material = (COST_BASE["kakao_ruby"] / 1000) * gramaj
+        packaging = COST_BASE["ambalaj_luks"]
+        base_cost = raw_material + packaging
+    elif "fistik" in urun_tipi.lower():
+        # Fistikli karisim (%40 fistik varsayimi)
+        fistik_cost = (COST_BASE["fistik_antep"] / 1000) * (gramaj * 0.4)
+        chocolate_cost = (COST_BASE["kakao_sutlu"] / 1000) * (gramaj * 0.6)
+        packaging = COST_BASE["ambalaj_luks"]
+        base_cost = fistik_cost + chocolate_cost + packaging
+    else:
+        # Standart Bitter
+        raw_material = (COST_BASE["kakao_bitter"] / 1000) * gramaj
+        packaging = COST_BASE["ambalaj_luks"] * 0.8 # Daha basit kutu
+        base_cost = raw_material + packaging
+        
+    # Satis Fiyati Onerisi (x3.5 Mark-up + Jewel Fee)
+    base_price = base_cost * 3.5
+    final_price = _calculate_jewel_price(base_price)
+    
+    return f"""
+    ## 💰 MALİYET ANALİZİ: {urun_tipi.title()} ({gramaj}g)
+    
+    - **Hammadde + Ambalaj:** {base_cost:.2f} TL
+    - **Operasyonel Maliyet:** {(base_cost * 0.5):.2f} TL (Tahmini)
+    - **Basabas Noktasi:** {(base_cost * 1.5):.2f} TL
+    
+    ---
+    ### 🏷️ FIYAT ONERISI
+    
+    **Taban Fiyat (x3.5):** {base_price:.2f} TL
+    **Sade 'Jewel' Fiyati (+%25):** {final_price:.2f} TL
+    
+    *Not: Bu fiyat, rakiplere gore (Orn: Vakko {11.60 * gramaj:.2f} TL) hala rekabetci mi?*
+    """

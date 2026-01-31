@@ -26,9 +26,31 @@ class Settings(BaseSettings):
     # Opsiyonel: Model secimi
     openai_model_name: str = "gpt-4o-mini"
 
+    # Firebase / Firestore
+    firebase_project_id: str | None = None
+    firebase_credentials_path: str | None = None
+
+    # Feature Flags (ozellik acma/kapama)
+    feature_real_scraping: bool = False
+    feature_firebase_storage: bool = False
+
+    # Scraping
+    scraping_timeout_seconds: int = 30
+
+    # Tenant (multi-tenant SaaS hazirlik)
+    app_default_tenant_id: str = "default"
+
     def validate_api_key(self) -> bool:
         """API key'in ayarlanip ayarlanmadigini kontrol eder."""
         return bool(self.openai_api_key and self.openai_api_key != "your-api-key-here")
+
+    def is_firebase_configured(self) -> bool:
+        """Firebase yapilandirmasinin tamamlanip tamamlanmadigini kontrol eder."""
+        return bool(
+            self.feature_firebase_storage
+            and self.firebase_project_id
+            and self.firebase_credentials_path
+        )
 
 
 def get_settings() -> Settings:

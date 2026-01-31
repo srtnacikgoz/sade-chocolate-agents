@@ -138,7 +138,15 @@ Ozet formati:
         )
 
         start_time = time.time()
-        result = crew.kickoff(inputs=inputs)
+
+        # Input Sanitization: CrewAI sadece scalar tipler kabul eder
+        crewai_inputs = {
+            "competitor_name": str(inputs.get("competitor_name", "")),
+            "product_category": str(inputs.get("product_category", "premium chocolate")),
+            "include_trends": bool(inputs.get("include_trends", True)),
+        }
+
+        result = crew.kickoff(inputs=crewai_inputs)
         elapsed = time.time() - start_time
 
         # Parse result into structured output

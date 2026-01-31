@@ -47,7 +47,7 @@ class ProductLaunchCrew:
 Yeni cikolata recetesi olustur: {inputs.flavor_concept}
 
 Hedef kitle: {inputs.target_audience}
-Fiyat araligi: {inputs.price_range[0]}-{inputs.price_range[1]} TL
+Fiyat araligi: {inputs.price_range_min}-{inputs.price_range_max} TL
 
 Cikti formati:
 - Lezzet profili (tatli/mayhos/aci dengesi)
@@ -124,7 +124,7 @@ Her cikti icin AuditResult formati kullan.
         Product launch workflow'unu calistirir.
 
         Args:
-            inputs: ProductLaunchInput field'lari
+            inputs: ProductLaunchInput field'lari (scalar degerler)
 
         Returns:
             ProductLaunchOutput with recipe, story, label_paths, audit
@@ -144,16 +144,35 @@ Her cikti icin AuditResult formati kullan.
         )
 
         start_time = time.time()
-        result = crew.kickoff(inputs=inputs)
+
+        # Input Sanitization: CrewAI tuple/list sevmez, sadece str/float/int/bool
+        # Tuple veya List gelirse string'e cevir
+        crewai_inputs = {}
+        for k, v in inputs.items():
+            if isinstance(v, (list, tuple)):
+                # Tuple ise (100, 200) -> "100-200" formatina cevir (ozel mantik)
+                if k == "price_range" and len(v) == 2:
+                     crewai_inputs[k] = f"{v[0]}-{v[1]}"
+                else:
+                     crewai_inputs[k] = str(v)
+            else:
+                crewai_inputs[k] = v
+        
+        # Explicit type casting for known fields
+        crewai_inputs["flavor_concept"] = str(inputs.get("flavor_concept", ""))
+        crewai_inputs["target_audience"] = str(inputs.get("target_audience", ""))
+        crewai_inputs["price_range_min"] = float(inputs.get("price_range_min", 100.0))
+        crewai_inputs["price_range_max"] = float(inputs.get("price_range_max", 200.0))
+        crewai_inputs["include_audit"] = bool(inputs.get("include_audit", True))
+
+        result = crew.kickoff(inputs=crewai_inputs)
         elapsed = time.time() - start_time
 
-        # Parse result into structured output
-        # Note: In production, parse actual CrewAI output
         return ProductLaunchOutput(
             recipe={"raw_output": str(result)},
             story={"raw_output": str(result)},
-            label_paths=[],  # Populated by Curator
-            audit=None,  # Populated by Perfectionist if include_audit
+            label_paths=[],
+            audit=None,
             execution_time_seconds=elapsed,
         )
 
