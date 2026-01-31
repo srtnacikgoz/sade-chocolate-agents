@@ -13,6 +13,11 @@ Skill kategorileri:
 """
 
 from sade_agents.skills.alchemist_skills import lezzet_pisileri
+from sade_agents.skills.codegen_skills import (
+    generate_streamlit_code,
+    verify_generated_code,
+    load_reference_examples,
+)
 from sade_agents.skills.curator_skills import gorsel_tasarla
 from sade_agents.skills.design_skills import fetch_figma_design, extract_design_tokens
 from sade_agents.skills.growth_skills import sosyal_nabiz
@@ -25,10 +30,13 @@ __all__: list[str] = [
     "extract_design_tokens",
     "fetch_figma_design",
     "fiyat_kontrol",
+    "generate_streamlit_code",
     "gorsel_tasarla",
     "hikayelestir",
     "lezzet_pisileri",
+    "load_reference_examples",
     "onaylanmis_ornekler_yukle",
     "sosyal_nabiz",
     "stil_kilavuzu_yukle",
+    "verify_generated_code",
 ]
