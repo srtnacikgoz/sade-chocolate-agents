@@ -39,6 +39,14 @@ def main() -> None:
         from sade_agents.web.pages.quality_audit import render
 
         render()
+    elif page == "competitors":
+        from sade_agents.web.pages.competitors import render
+
+        render()
+    elif page == "ui_generator":
+        from sade_agents.web.pages.ui_generator import render
+
+        render()
     elif page == "history":
         from sade_agents.web.pages.history import render
 

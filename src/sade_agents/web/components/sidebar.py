@@ -26,6 +26,8 @@ def render_sidebar() -> str:
             "product_launch": ("🚀", "Urun Lansmanı"),
             "market_analysis": ("📊", "Pazar Analizi"),
             "quality_audit": ("✅", "Kalite Denetimi"),
+            "competitors": ("🎯", "Rakip Yonetimi"),
+            "ui_generator": ("🎨", "UI Generator"),
             "history": ("📜", "Gecmis"),
         }
 
@@ -77,6 +79,6 @@ def render_sidebar() -> str:
         st.markdown("---")
 
         # Footer
-        st.caption("v1.1.0 | Sade Chocolate")
+        st.caption("v1.1.1 | Sade Chocolate")
 
     return st.session_state.current_page
