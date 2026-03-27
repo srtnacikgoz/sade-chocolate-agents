@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sade-agents"
+version = "0.1.0"
+description = "Sade Chocolate için AI destekli iş operasyonları multi-agent sistemi"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Sade Chocolate", email = "info@sadechocolate.com" }
+]
+keywords = ["ai", "agents", "crewai", "chocolate", "business-automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    # Core
+    "crewai>=0.86.0",
+    "python-dotenv>=1.0.0",
+    "pydantic-settings>=2.0.0",
+    # Web UI
+    "streamlit>=1.30.0",
+    # Firebase/Firestore
+    "google-cloud-firestore>=2.15.0",
+    "firebase-admin>=6.4.0",
+    # Scraping
+    "aiohttp>=3.9.0",
+    "beautifulsoup4>=4.12.0",
+    "tenacity>=8.2.0",
+    "lxml>=5.0.0",
+    # Social Media
+    "praw>=7.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.24.0",
+    "ruff>=0.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sade_agents"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

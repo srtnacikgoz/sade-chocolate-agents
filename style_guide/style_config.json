@@ -1,0 +1,129 @@
+{
+  "brand_name": "Sade",
+  "full_name": "Sade Chocolate",
+  "aesthetic": "quiet_luxury",
+  "description": "Sessiz Lüks (Quiet Luxury) estetigi icin Gemini API prompt parametreleri",
+  "style_keywords": [
+    "understated elegance",
+    "minimalist",
+    "sophisticated",
+    "Monocle magazine",
+    "Kinfolk aesthetic",
+    "timeless",
+    "whisper luxury",
+    "artisanal",
+    "premium craftsmanship",
+    "subtle refinement",
+    "quiet confidence",
+    "editorial photography"
+  ],
+  "avoid_keywords": [
+    "flashy",
+    "loud",
+    "busy",
+    "cheap",
+    "discount",
+    "urgent",
+    "emoji",
+    "sale",
+    "bright colors",
+    "gradient",
+    "drop shadow",
+    "3D effects",
+    "cartoon",
+    "playful",
+    "trendy"
+  ],
+  "composition": {
+    "layout": "minimalist, centered",
+    "white_space": "ample - en az 30% beyaz alan",
+    "text_position": "centered or lower third",
+    "alignment": "centered preferred, left-aligned for longer text",
+    "balance": "asymmetric balance OK if intentional and elegant",
+    "focal_point": "single clear focal point - product or brand name"
+  },
+  "visual_elements": {
+    "texture": [
+      "matte surfaces",
+      "natural paper texture",
+      "subtle linen texture",
+      "minimal grain"
+    ],
+    "patterns": [
+      "geometric minimal patterns OK",
+      "avoid busy patterns",
+      "single pattern element if used"
+    ],
+    "photography_style": [
+      "natural light",
+      "soft shadows",
+      "muted tones",
+      "editorial quality",
+      "high contrast but not harsh"
+    ],
+    "illustration_style": [
+      "line art preferred over filled shapes",
+      "minimal strokes",
+      "elegant curves",
+      "avoid cartoonish or childish"
+    ]
+  },
+  "label_specs": {
+    "aspect_ratio": "3:4",
+    "aspect_ratio_note": "Vertical label - standard chocolate bar format",
+    "resolution": "2048x2732 (2K)",
+    "resolution_production": "4096x5464 (4K for print)",
+    "text_max_chars": 25,
+    "text_max_chars_note": "Gemini text rendering limit - keep product names short",
+    "dpi": 300,
+    "color_mode": "RGB for digital, CMYK for print",
+    "file_format": "PNG for digital, PDF/AI for print-ready"
+  },
+  "brand_voice": {
+    "tone": "Sophisticated, understated, confident",
+    "personality": "Expert but approachable, refined but warm",
+    "language_style": "Concise, poetic, no hyperbole",
+    "avoid_tone": "Shouty, urgent, salesy, cute, overly casual"
+  },
+  "competitors_visual_reference": [
+    "Vakko Chocolate",
+    "Butterfly Chocolate",
+    "Godiva",
+    "Aesop (packaging aesthetic)",
+    "Diptyque (label simplicity)",
+    "Kinfolk Magazine (editorial style)",
+    "Monocle (sophisticated minimalism)"
+  ],
+  "prompt_building": {
+    "structure": "aesthetic keywords + composition rules + avoid list",
+    "reference_images": "1-6 images from style_guide/reference_images/",
+    "color_palette": "Inject from brand_colors.json",
+    "typography": "Inject from typography.json",
+    "product_context": "Inject from product SKU data",
+    "iteration_strategy": "Generate 3 variations, select best, refine if needed"
+  },
+  "gemini_specific": {
+    "model": "gemini-2.0-flash-exp",
+    "model_note": "Latest Gemini vision model - best for image generation",
+    "safety_settings": "BLOCK_NONE for creative content (chocolate labels are safe)",
+    "temperature": 0.7,
+    "temperature_note": "Balanced creativity - not too random, not too rigid",
+    "max_output_tokens": 2048,
+    "thinking_budget": 8192,
+    "thinking_note": "Extended thinking for better aesthetic decisions"
+  },
+  "quality_checklist": {
+    "text_readable": "Text kontrast yeterli mi? (WCAG AA)",
+    "white_space": "En az 30% beyaz alan var mi?",
+    "alignment": "Elements aligned to grid mi?",
+    "color_palette": "Brand colors kullaniliyor mu?",
+    "typography": "Font weights dogru mu? (NO bold)",
+    "aesthetic_match": "Quiet luxury hissi var mi?",
+    "competitor_comparison": "Vakko/Butterfly seviyesinde mi?"
+  },
+  "file_naming": {
+    "pattern": "sade_[product_sku]_v[N]_[timestamp].png",
+    "example": "sade_bitter70_v1_20260130.png",
+    "folder_structure": "outputs/labels/[product-name]/v[N]/"
+  }
+}

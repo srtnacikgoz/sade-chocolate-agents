@@ -1,0 +1,117 @@
+{
+  "brand_name": "Sade Chocolate",
+  "aesthetic": "quiet_luxury",
+  "description": "Sessiz Lüks (Quiet Luxury) tipografi sistemi - elegant, okunaklı, timeless",
+  "fonts": {
+    "primary": {
+      "family": "Cormorant Garamond",
+      "fallback": "Garamond, Georgia, serif",
+      "type": "Serif",
+      "usage": "Marka ismi, urun isimleri, basliklar",
+      "rationale": "Classic serif - elegance ve tradition hissi. Premium cikolata markalarin favori font ailesi.",
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "note": "BOLD KULLANMA - quiet luxury whispering ile uyumsuz"
+      },
+      "google_fonts": "https://fonts.google.com/specimen/Cormorant+Garamond",
+      "license": "Open Font License - commercial use OK"
+    },
+    "secondary": {
+      "family": "Outfit",
+      "fallback": "Helvetica Neue, Arial, sans-serif",
+      "type": "Sans-serif",
+      "usage": "Supporting text, aciklamalar, kisa bilgiler",
+      "rationale": "Modern, clean sans-serif - Monocle/Kinfolk estetigi. Geometric ama insancil.",
+      "weights": {
+        "light": 300,
+        "regular": 400,
+        "note": "Ince weightler tercih edilir - hafiflik hissi"
+      },
+      "google_fonts": "https://fonts.google.com/specimen/Outfit",
+      "license": "Open Font License - commercial use OK"
+    }
+  },
+  "label_typography": {
+    "product_name": {
+      "font": "primary (Cormorant Garamond)",
+      "size": "24-32pt (etiket boyutuna gore)",
+      "weight": "Medium (500)",
+      "letter_spacing": "0.05em",
+      "line_height": "1.2",
+      "max_characters": 25,
+      "notes": "Gemini text rendering limiti - urun isimleri kisa tutulmali"
+    },
+    "tagline": {
+      "font": "secondary (Outfit)",
+      "size": "10-14pt",
+      "weight": "Light (300) veya Regular (400)",
+      "letter_spacing": "0.08em",
+      "line_height": "1.4",
+      "max_characters": 40,
+      "notes": "Genis letter-spacing - hava, breathability"
+    },
+    "details": {
+      "font": "secondary (Outfit)",
+      "size": "8-10pt",
+      "weight": "Regular (400)",
+      "letter_spacing": "0.03em",
+      "line_height": "1.5",
+      "usage": "Gramaj, ingredients kisa liste (eger gerekirse)",
+      "notes": "Minimal text - quiet luxury means minimal words"
+    }
+  },
+  "spacing_system": {
+    "letter_spacing": {
+      "tight": "0.01em",
+      "normal": "0.03em",
+      "relaxed": "0.05em",
+      "loose": "0.08em",
+      "note": "Genis spacing luks hissi verir - bol kullan"
+    },
+    "line_height": {
+      "tight": "1.2",
+      "normal": "1.5",
+      "relaxed": "1.8",
+      "note": "Generous line-height - okumayı kolaylaştırır, premium gorunum"
+    },
+    "white_space": {
+      "principle": "White space is a design element",
+      "margin_ratio": "En az %30 beyaz alan - sikismamis layout",
+      "padding": "Generous - text/borders arasinda bol mesafe"
+    }
+  },
+  "text_rules": {
+    "max_words_on_label": "8-12 kelime ideal (isim + tagline dahil)",
+    "capitalization": {
+      "product_name": "Title Case (Her Kelimenin Ilk Harfi Buyuk)",
+      "tagline": "Sentence case (Ilk kelime buyuk, digerleri kucuk)",
+      "avoid": "ALL CAPS (shouty - quiet luxury ile uyumsuz)"
+    },
+    "punctuation": {
+      "use": "Minimal - sadece gerekli noktalama",
+      "avoid": "Unlem isareti (!), coklu nokta (...), emoji"
+    },
+    "language": {
+      "primary": "Turkce",
+      "secondary": "Ingilizce (uluslararasi pazar icin)",
+      "tone": "Formal ama sicak - You/Sen degil, product-centric"
+    }
+  },
+  "typography_philosophy": {
+    "principle": "Legibility first, elegance second",
+    "hierarchy": "Clear but subtle - contrast through weight/size, not color",
+    "competitor_reference": "Aesop labels, Diptyque candles, Net-a-Porter product pages",
+    "avoid": [
+      "Script fonts (okunaksiz, cliche)",
+      "Condensed fonts (sikisik gorunum)",
+      "Decorative display fonts (flashy)",
+      "Cok fazla font karmasasi (max 2 font family)"
+    ]
+  },
+  "technical_notes": {
+    "rendering": "Anti-aliased, subpixel rendering OFF (crisper look)",
+    "fallback_strategy": "System fonts always available - web-safe fallbacks tanimli",
+    "gemini_compatibility": "Google Fonts kullanimi Gemini API ile uyumlu"
+  }
+}
