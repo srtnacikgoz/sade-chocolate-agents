@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reçete Scout — {{TARIH}}</title>
+  <style>
+    /* === Reset & Base === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --radius: 8px;
+      --radius-sm: 4px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+      --transition: 0.2s ease;
+    }
+
+    /* === Light Theme === */
+    [data-theme="light"] {
+      --bg: #f8f7f4;
+      --bg-card: #ffffff;
+      --bg-header: #1a1a2e;
+      --bg-footer: #fafaf8;
+      --bg-form: #f5f4f1;
+      --bg-tag: #edecea;
+      --bg-tag-selected: #2d6a4f;
+      --bg-star: transparent;
+      --text: #1a1a1a;
+      --text-secondary: #555555;
+      --text-muted: #888888;
+      --text-header: #ffffff;
+      --text-tag: #444444;
+      --text-tag-selected: #ffffff;
+      --border: #e0ddd8;
+      --border-section: #d4d0c8;
+      --star-empty: #ccc;
+      --star-filled: #f0a500;
+      --accent: #2d6a4f;
+      --accent-hover: #245a42;
+      --complexity-filled: #2d6a4f;
+      --complexity-empty: #e0ddd8;
+      --link: #1a5276;
+      --export-bg: #f0a500;
+      --export-text: #1a1a2e;
+    }
+
+    /* === Dark Theme === */
+    [data-theme="dark"] {
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --bg-header: #0a0a14;
+      --bg-footer: #12121e;
+      --bg-form: #16162a;
+      --bg-tag: #252540;
+      --bg-tag-selected: #40916c;
+      --bg-star: transparent;
+      --text: #e8e6e1;
+      --text-secondary: #b0ada6;
+      --text-muted: #777777;
+      --text-header: #e8e6e1;
+      --text-tag: #c0bdb6;
+      --text-tag-selected: #ffffff;
+      --border: #2a2a44;
+      --border-section: #333355;
+      --star-empty: #444;
+      --star-filled: #f0a500;
+      --accent: #40916c;
+      --accent-hover: #52b788;
+      --complexity-filled: #40916c;
+      --complexity-empty: #2a2a44;
+      --link: #6db3d4;
+      --export-bg: #f0a500;
+      --export-text: #1a1a2e;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* === Header === */
+    header {
+      background: var(--bg-header);
+      color: var(--text-header);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--text-header);
+      font-size: 1.25rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition);
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .export-btn {
+      background: var(--export-bg);
+      color: var(--export-text);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity var(--transition);
+      letter-spacing: 0.01em;
+    }
+
+    .export-btn:hover {
+      opacity: 0.88;
+    }
+
+    header .date {
+      font-size: 0.9rem;
+      margin-top: 0.4rem;
+      opacity: 0.8;
+    }
+
+    header .stats {
+      font-size: 0.82rem;
+      opacity: 0.65;
+      margin-top: 0.15rem;
+    }
+
+    /* === Main === */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    /* === Category Section === */
+    .category {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--border-section);
+    }
+
+    .category:last-child {
+      border-bottom: none;
+    }
+
+    .category h2 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--accent);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .card-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* === Recipe Card === */
+    .recipe-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: box-shadow var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .recipe-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+
+    .recipe-info {
+      padding: 1.25rem;
+    }
+
+    .recipe-info h3 {
+      font-size: 1.05rem;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+
+    .recipe-name-tr {
+      display: block;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .recipe-name-original {
+      display: block;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .source {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: var(--link);
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px dotted var(--link);
+    }
+
+    .source:hover {
+      opacity: 0.8;
+    }
+
+    .difficulty {
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+      color: var(--text-secondary);
+    }
+
+    .why-selected {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .ingredients {
+      font-size: 0.85rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .ingredients strong {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.2rem;
+    }
+
+    .ingredients ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.75rem;
+    }
+
+    .ingredients li {
+      font-size: 0.83rem;
+      color: var(--text-secondary);
+    }
+
+    .ingredients li::before {
+      content: "\2022";
+      margin-right: 0.3rem;
+      color: var(--accent);
+    }
+
+    .components {
+      margin-bottom: 0.6rem;
+    }
+
+    .components strong {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
+    }
+
+    .component-tag {
+      display: inline-block;
+      font-size: 0.73rem;
+      background: var(--bg-tag);
+      color: var(--text-tag);
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      margin: 0.1rem 0.2rem 0.1rem 0;
+      border: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    .tech-note {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+      padding-left: 0.6rem;
+      border-left: 2px solid var(--accent);
+    }
+
+    /* === Complexity Bar === */
+    .complexity {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complexity-bar {
+      display: inline-flex;
+      gap: 3px;
+    }
+
+    .complexity-bar .block {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      background: var(--complexity-empty);
+      transition: background var(--transition);
+    }
+
+    .complexity-bar .block.filled {
+      background: var(--complexity-filled);
+    }
+
+    /* === Scoring Form === */
+    .scoring-form {
+      background: var(--bg-form);
+      padding: 0.75rem 1.25rem 1rem;
+      border-top: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    .stars {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stars label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-right: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .star {
+      background: var(--bg-star);
+      border: none;
+      font-size: 1.35rem;
+      cursor: pointer;
+      color: var(--star-empty);
+      transition: color var(--transition), transform 0.1s;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .star:hover {
+      transform: scale(1.15);
+    }
+
+    .star.filled {
+      color: var(--star-filled);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tags label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-right: 0.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-btn {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-tag);
+      color: var(--text-tag);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .tag-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .tag-btn.selected {
+      background: var(--bg-tag-selected);
+      color: var(--text-tag-selected);
+      border-color: var(--bg-tag-selected);
+    }
+
+    .comment {
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      color: var(--text);
+      resize: vertical;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .comment:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* === Footer === */
+    footer {
+      background: var(--bg-footer);
+      border-top: 2px solid var(--border-section);
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      border-radius: var(--radius);
+      transition: background var(--transition);
+    }
+
+    footer h2 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    footer table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    footer th,
+    footer td {
+      text-align: left;
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    footer th {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    footer td {
+      color: var(--text-secondary);
+    }
+
+    footer td a {
+      color: var(--link);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--link);
+    }
+
+    footer td a:hover {
+      opacity: 0.8;
+    }
+
+    /* === Scrollbar (subtle) === */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    /* === Print === */
+    @media print {
+      header {
+        position: static;
+        box-shadow: none;
+      }
+
+      .header-actions {
+        display: none;
+      }
+
+      .scoring-form {
+        display: none;
+      }
+
+      .recipe-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+
+      .category {
+        break-inside: avoid;
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <h1>Reçete Scout</h1>
+      <div class="header-actions">
+        <button type="button" onclick="toggleTheme()" class="theme-toggle" title="Tema Değiştir">&#x1F313;</button>
+        <button type="button" onclick="exportScores()" class="export-btn">Puanları Dışa Aktar</button>
+      </div>
+    </div>
+    <p class="date">{{TARIH}}</p>
+    <p class="stats">Taranan kaynak: {{KAYNAK_SAYISI}} | Toplam reçete: 16</p>
+  </header>
+
+  <main>
+
+    <!-- ==================== 1. Viennoiserie ==================== -->
+    <section class="category" id="viennoiserie">
+      <h2>Viennoiserie</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="1" data-category="viennoiserie">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">İstiridye Kruvasan</span>
+              <span class="recipe-name-original">Croissant aux Huitres</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+              <span class="component-tag">{{BILESEN_3}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="2" data-category="viennoiserie">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Brioche Feuilletée</span>
+              <span class="recipe-name-original">Brioche Feuilletée</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 2. Tart & Tartolet ==================== -->
+    <section class="category" id="tart-tartolet">
+      <h2>Tart &amp; Tartolet</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="3" data-category="tart-tartolet">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Limon Bademli Tart</span>
+              <span class="recipe-name-original">Tarte Citron Amande</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+              <span class="component-tag">{{BILESEN_3}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="4" data-category="tart-tartolet">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Fındık Karamel Tartolet</span>
+              <span class="recipe-name-original">Tartelette Noisette Caramel</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3. Entremets & Mousse ==================== -->
+    <section class="category" id="entremets-mousse">
+      <h2>Entremets &amp; Mousse</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="5" data-category="entremets-mousse">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Çilek Fıstık Entremets</span>
+              <span class="recipe-name-original">Entremets Fraise Pistache</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+              <span class="component-tag">{{BILESEN_3}}</span>
+              <span class="component-tag">{{BILESEN_4}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="6" data-category="entremets-mousse">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Çikolatalı Mousse Pasta</span>
+              <span class="recipe-name-original">Mousse au Chocolat Noir</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+              <span class="component-tag">{{BILESEN_3}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 4. Petit Gateau ==================== -->
+    <section class="category" id="petit-gateau">
+      <h2>Petit Gateau</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="7" data-category="petit-gateau">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Frambuazlı Financier</span>
+              <span class="recipe-name-original">Financier aux Framboises</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="8" data-category="petit-gateau">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Paris-Brest Bireysel</span>
+              <span class="recipe-name-original">Paris-Brest Individuel</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+              <span class="component-tag">{{BILESEN_3}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 5. Çikolata ==================== -->
+    <section class="category" id="cikolata">
+      <h2>Çikolata</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="9" data-category="cikolata">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Turuncu Çikolata Bonbon</span>
+              <span class="recipe-name-original">Bonbon Chocolat Orange</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+              <span class="component-tag">{{BILESEN_3}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="10" data-category="cikolata">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Çikolata Tablo</span>
+              <span class="recipe-name-original">Tablette Chocolat Artisanale</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 6. Trend ==================== -->
+    <section class="category" id="trend">
+      <h2>Trend</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="11" data-category="trend">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Dubai Çikolata Kadayıf</span>
+              <span class="recipe-name-original">Dubai Chocolate Kunafa Bar</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="12" data-category="trend">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Matcha Burnt Basque</span>
+              <span class="recipe-name-original">Matcha Burnt Basque Cheesecake</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 7. Uluslararası ==================== -->
+    <section class="category" id="uluslararasi">
+      <h2>Uluslararası</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="13" data-category="uluslararasi">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Japon Souffle Cheesecake</span>
+              <span class="recipe-name-original">Japanese Souffle Cheesecake</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="14" data-category="uluslararasi">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Kanelbullar</span>
+              <span class="recipe-name-original">Kanelbullar (Swedish Cinnamon Buns)</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 8. Sandviç ==================== -->
+    <section class="category" id="sandvic">
+      <h2>Sandviç</h2>
+      <div class="card-grid">
+
+        <article class="recipe-card" data-id="15" data-category="sandvic">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Croque Monsieur Deluxe</span>
+              <span class="recipe-name-original">Croque Monsieur Truffe</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+        <article class="recipe-card" data-id="16" data-category="sandvic">
+          <div class="recipe-info">
+            <h3>
+              <span class="recipe-name-tr">Focaccia Akdeniz</span>
+              <span class="recipe-name-original">Focaccia Mediterraneenne</span>
+            </h3>
+            <a href="{{LINK}}" target="_blank" rel="noopener" class="source">Kaynak: {{SEF/BLOG}}</a>
+            <div class="difficulty">Zorluk: &#11088;&#11088;&#11088;</div>
+            <p class="why-selected">{{NEDEN_SECILDI}}</p>
+            <div class="ingredients">
+              <strong>Ana malzemeler:</strong>
+              <ul>
+                <li>{{MALZEME_1}}</li>
+                <li>{{MALZEME_2}}</li>
+                <li>{{MALZEME_3}}</li>
+              </ul>
+            </div>
+            <div class="components">
+              <strong>Bileşenler:</strong>
+              <span class="component-tag">{{BILESEN_1}}</span>
+              <span class="component-tag">{{BILESEN_2}}</span>
+            </div>
+            <p class="tech-note">{{TEKNIK_NOT}}</p>
+            <div class="complexity" data-score="{{KARMASIKLIK_SKOR}}">Karmaşıklık: <span class="complexity-bar"></span> {{KARMASIKLIK_SKOR}}/5</div>
+          </div>
+          <div class="scoring-form">
+            <div class="stars">
+              <label>Puan:</label>
+              <button type="button" class="star" data-value="1">&#9733;</button>
+              <button type="button" class="star" data-value="2">&#9733;</button>
+              <button type="button" class="star" data-value="3">&#9733;</button>
+              <button type="button" class="star" data-value="4">&#9733;</button>
+              <button type="button" class="star" data-value="5">&#9733;</button>
+            </div>
+            <div class="tags">
+              <label>Etiketler:</label>
+              <button type="button" class="tag-btn" data-tag="teknik">teknik</button>
+              <button type="button" class="tag-btn" data-tag="yaratici">yaratıcı</button>
+              <button type="button" class="tag-btn" data-tag="klasik">klasik</button>
+              <button type="button" class="tag-btn" data-tag="sunum">sunum</button>
+              <button type="button" class="tag-btn" data-tag="uygulanabilir">uygulanabilir</button>
+              <button type="button" class="tag-btn" data-tag="trend">trend</button>
+              <button type="button" class="tag-btn" data-tag="ilham">ilham</button>
+              <button type="button" class="tag-btn" data-tag="mevsimsel">mevsimsel</button>
+            </div>
+            <textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <h2>Keşfedilen Kaynaklar</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Kaynak</th>
+          <th>Tür</th>
+          <th>Not</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="{{KAYNAK_URL_1}}" target="_blank" rel="noopener">{{KAYNAK_ADI_1}}</a></td>
+          <td>{{KAYNAK_TUR_1}}</td>
+          <td>{{KAYNAK_NOT_1}}</td>
+        </tr>
+        <tr>
+          <td><a href="{{KAYNAK_URL_2}}" target="_blank" rel="noopener">{{KAYNAK_ADI_2}}</a></td>
+          <td>{{KAYNAK_TUR_2}}</td>
+          <td>{{KAYNAK_NOT_2}}</td>
+        </tr>
+        <tr>
+          <td><a href="{{KAYNAK_URL_3}}" target="_blank" rel="noopener">{{KAYNAK_ADI_3}}</a></td>
+          <td>{{KAYNAK_TUR_3}}</td>
+          <td>{{KAYNAK_NOT_3}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </footer>
+
+  <script>
+    /* === State Management === */
+    // NOTE: {{TARIH}} is replaced by the agent with the actual date (e.g., 2026-03-25)
+    var STORAGE_KEY = 'scores-{{TARIH}}';
+    var VALID_TAGS = ['teknik','yaratici','klasik','sunum','uygulanabilir','trend','ilham','mevsimsel'];
+    var scores = {};
+
+    /* === Complexity Bar Renderer === */
+    function renderComplexityBars() {
+      document.querySelectorAll('.complexity').forEach(function(el) {
+        var score = parseInt(el.getAttribute('data-score')) || 0;
+        var bar = el.querySelector('.complexity-bar');
+        if (!bar) return;
+        bar.innerHTML = '';
+        for (var i = 1; i <= 5; i++) {
+          var block = document.createElement('span');
+          block.className = 'block' + (i <= score ? ' filled' : '');
+          bar.appendChild(block);
+        }
+      });
+    }
+
+    /* === Star Rating === */
+    function updateStarUI(card, value) {
+      card.querySelectorAll('.star').forEach(function(star) {
+        var starValue = parseInt(star.getAttribute('data-value'));
+        if (starValue <= value) {
+          star.classList.add('filled');
+        } else {
+          star.classList.remove('filled');
+        }
+      });
+    }
+
+    document.querySelectorAll('.star').forEach(function(star) {
+      star.addEventListener('click', function(e) {
+        var card = e.target.closest('.recipe-card');
+        var id = card.getAttribute('data-id');
+        var value = parseInt(e.target.getAttribute('data-value'));
+        scores[id] = scores[id] || {};
+        scores[id].puan = value;
+        updateStarUI(card, value);
+        saveToLocalStorage();
+      });
+    });
+
+    /* === Tag Toggle === */
+    document.querySelectorAll('.tag-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        var card = e.target.closest('.recipe-card');
+        var id = card.getAttribute('data-id');
+        var tag = e.target.getAttribute('data-tag');
+        scores[id] = scores[id] || {};
+        scores[id].tags = scores[id].tags || [];
+        var idx = scores[id].tags.indexOf(tag);
+        if (idx > -1) {
+          scores[id].tags.splice(idx, 1);
+        } else {
+          scores[id].tags.push(tag);
+        }
+        e.target.classList.toggle('selected');
+        saveToLocalStorage();
+      });
+    });
+
+    /* === Comment (debounced save) === */
+    var saveTimer = null;
+    function debouncedSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveToLocalStorage, 400);
+    }
+
+    document.querySelectorAll('.comment').forEach(function(textarea) {
+      textarea.addEventListener('input', function(e) {
+        var card = e.target.closest('.recipe-card');
+        var id = card.getAttribute('data-id');
+        scores[id] = scores[id] || {};
+        scores[id].yorum = e.target.value;
+        debouncedSave();
+      });
+    });
+
+    /* === LocalStorage Persistence === */
+    function saveToLocalStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(scores));
+    }
+
+    function loadFromLocalStorage() {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      try {
+        scores = JSON.parse(saved);
+      } catch (e) {
+        console.warn('Invalid score data in localStorage, resetting.');
+        scores = {};
+        localStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+      Object.keys(scores).forEach(function(id) {
+        if (!/^\d+$/.test(id)) return;
+        var data = scores[id];
+        var card = document.querySelector('.recipe-card[data-id="' + id + '"]');
+        if (!card) return;
+        if (data.puan) updateStarUI(card, data.puan);
+        if (data.tags) {
+          data.tags.forEach(function(tag) {
+            if (VALID_TAGS.indexOf(tag) === -1) return;
+            var btn = card.querySelector('.tag-btn[data-tag="' + tag + '"]');
+            if (btn) btn.classList.add('selected');
+          });
+        }
+        if (data.yorum) {
+          var textarea = card.querySelector('.comment');
+          if (textarea) textarea.value = data.yorum;
+        }
+      });
+    }
+
+    /* === Theme Toggle === */
+    function toggleTheme() {
+      var html = document.documentElement;
+      var current = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+      localStorage.setItem('theme', html.getAttribute('data-theme'));
+    }
+
+    /* === Export === */
+    function exportScores() {
+      var exportData = {
+        tarih: '{{TARIH}}',
+        puanlamaTarihi: new Date().toISOString(),
+        receteler: {}
+      };
+      document.querySelectorAll('.recipe-card').forEach(function(card) {
+        var id = card.getAttribute('data-id');
+        var category = card.getAttribute('data-category');
+        var name = card.querySelector('.recipe-name-tr').textContent;
+        var sourceEl = card.querySelector('.source');
+        var source = sourceEl ? sourceEl.href : '';
+        var components = [];
+        card.querySelectorAll('.component-tag').forEach(function(t) {
+          components.push(t.textContent);
+        });
+        var complexityEl = card.querySelector('.complexity');
+        var complexity = complexityEl ? (parseInt(complexityEl.getAttribute('data-score')) || 0) : 0;
+        var cardScores = scores[id] || {};
+        exportData.receteler[id] = {
+          ad: name,
+          kategori: category,
+          kaynak: source,
+          bilesenler: components,
+          karmasiklik: complexity,
+          puan: cardScores.puan || null,
+          tags: cardScores.tags || [],
+          yorum: cardScores.yorum || ''
+        };
+      });
+      var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = '{{TARIH}}-scores.json';
+      a.click();
+      URL.revokeObjectURL(url);
+
+      var btn = document.querySelector('.export-btn');
+      var originalText = btn.textContent;
+      btn.textContent = 'İndirildi!';
+      btn.disabled = true;
+      setTimeout(function() {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }, 2000);
+    }
+
+    /* === Init === */
+    document.addEventListener('DOMContentLoaded', function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+      renderComplexityBars();
+      loadFromLocalStorage();
+    });
+  </script>
+
+</body>
+</html>

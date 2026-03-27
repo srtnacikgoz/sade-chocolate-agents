@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{RECIPE_TITLE}} — Sade Patisserie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Variables ── */
+    :root {
+      --bg:        #f8f6f1;
+      --surface:   #fff;
+      --ink:       #1a1814;
+      --ink-2:     #5a5450;
+      --ink-3:     #9e9890;
+      --line:      #e8e3dc;
+      --gold:      #c9a96e;
+      --gold-soft: #faf3e8;
+      --ff-d: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --ff-b: 'DM Sans', -apple-system, system-ui, sans-serif;
+      --max: 1080px;
+      --tr: 130ms ease;
+    }
+
+    /* ── Base ── */
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--ff-b);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+    /* ────────────────────────────────────────────
+       HERO
+    ──────────────────────────────────────────── */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 3rem 2.5rem 2.5rem;
+    }
+
+    .hero-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+    }
+
+    .eyebrow-left {
+      font-size: 0.675rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .eyebrow-right {
+      font-size: 0.675rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    h1 {
+      font-family: var(--ff-d);
+      font-size: clamp(2.75rem, 7vw, 5.5rem);
+      font-weight: 600;
+      line-height: 1.04;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .original-name {
+      font-family: var(--ff-d);
+      font-size: 1.1875rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink-3);
+      margin-bottom: 1.75rem;
+    }
+
+    /* Meta strip */
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      padding: 0.75rem 1.5rem 0.75rem 0;
+      margin-right: 1.5rem;
+      border-right: 1px solid var(--line);
+    }
+
+    .meta-item:last-child {
+      border-right: none;
+      margin-right: 0;
+    }
+
+    .meta-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .meta-val {
+      font-size: 0.875rem;
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* Style chips */
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chip {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      color: var(--ink-2);
+      letter-spacing: 0.035em;
+      background: var(--bg);
+      transition: border-color var(--tr), color var(--tr);
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.775rem;
+      color: var(--ink-3);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1px;
+      transition: color var(--tr), border-color var(--tr);
+    }
+
+    .source-link:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* ────────────────────────────────────────────
+       HIKAYE (Story)
+    ──────────────────────────────────────────── */
+    .hikaye-wrap {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hikaye {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2.5rem 2.5rem;
+      display: grid;
+      grid-template-columns: 10rem 1fr;
+      gap: 0 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 680px) {
+      .hikaye { grid-template-columns: 1fr; gap: 0.75rem 0; }
+    }
+
+    .hikaye-label {
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      padding-top: 0.3rem;
+    }
+
+    .hikaye-text {
+      font-family: var(--ff-d);
+      font-size: 1.125rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--ink-2);
+    }
+
+    .hikaye-text p { margin-bottom: 1em; }
+    .hikaye-text p:last-child { margin-bottom: 0; }
+
+    /* ────────────────────────────────────────────
+       TWO-COLUMN CONTENT
+    ──────────────────────────────────────────── */
+    .icerik-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      align-items: start;
+      min-height: 60vh;
+    }
+
+    @media (max-width: 780px) {
+      .icerik-wrap { grid-template-columns: 1fr; }
+    }
+
+    /* ────────────────────────────────────────────
+       MALZEME SIDEBAR
+    ──────────────────────────────────────────── */
+    .malzeme-sidebar {
+      border-right: 1px solid var(--line);
+      padding: 2.5rem 1.75rem 2.5rem 2.5rem;
+      position: sticky;
+      top: 0;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 780px) {
+      .malzeme-sidebar {
+        position: static;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        padding: 2rem 2.5rem;
+      }
+    }
+
+    .sidebar-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .malzeme-grup {
+      margin-bottom: 1.625rem;
+    }
+
+    .malzeme-grup:last-child { margin-bottom: 0; }
+
+    .grup-baslik {
+      font-size: 0.675rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      font-weight: 500;
+      margin-bottom: 0.625rem;
+      padding-bottom: 0.375rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .malzeme-liste {
+      list-style: none;
+    }
+
+    .malzeme-liste li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.625rem;
+      font-size: 0.825rem;
+      padding: 0.325rem 0;
+      border-bottom: 1px solid rgba(232, 227, 220, 0.6);
+      color: var(--ink);
+    }
+
+    .malzeme-liste li:last-child { border-bottom: none; }
+
+    .mlz-ad { color: var(--ink-2); }
+
+    .mlz-miktar {
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.8rem;
+    }
+
+    /* ────────────────────────────────────────────
+       ADIMLAR (Steps)
+    ──────────────────────────────────────────── */
+    .adimlar {
+      padding: 2.5rem 2.5rem 3rem;
+    }
+
+    .adimlar-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 2.5rem;
+      display: block;
+    }
+
+    /* Single step */
+    .adim {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      gap: 0 1.25rem;
+      margin-bottom: 2.5rem;
+      align-items: start;
+    }
+
+    .adim:last-child { margin-bottom: 0; }
+
+    .adim-no {
+      font-family: var(--ff-d);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--line);
+      line-height: 1;
+      text-align: right;
+      padding-top: 0.05rem;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .adim-icerik {}
+
+    .adim-baslik {
+      font-family: var(--ff-d);
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .adim-text {
+      font-size: 0.9rem;
+      color: var(--ink-2);
+      line-height: 1.8;
+    }
+
+    .adim-text p { margin-bottom: 0.75em; }
+    .adim-text p:last-child { margin-bottom: 0; }
+
+    /* Inline teknik not — adım içinde, callout kadar öne çıkmayan kısa notlar */
+    .adim-not {
+      font-size: 0.8rem;
+      color: var(--ink-3);
+      font-style: italic;
+      margin-top: 0.375rem;
+      padding-left: 0.75rem;
+      border-left: 1.5px solid var(--line);
+      margin-bottom: 0;
+    }
+
+    /* ────────────────────────────────────────────
+       PÜF NOKTASI
+    ──────────────────────────────────────────── */
+    .puf-noktasi {
+      margin: 0 0 2.5rem 4.5rem; /* indent to align with step text */
+      padding: 0.875rem 1.125rem;
+      background: var(--gold-soft);
+      border-left: 2px solid var(--gold);
+      border-radius: 0 3px 3px 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 480px) {
+      .puf-noktasi { margin-left: 0; }
+      .adim { grid-template-columns: 2.5rem 1fr; gap: 0 0.875rem; }
+      .adim-no { font-size: 2.25rem; }
+    }
+
+    .puf-icon {
+      color: var(--gold);
+      font-size: 0.55rem;
+      flex-shrink: 0;
+      margin-top: 0.325rem;
+      letter-spacing: 0.03em;
+    }
+
+    .puf-label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .puf-text {
+      font-size: 0.85rem;
+      color: var(--ink-2);
+      line-height: 1.72;
+      margin: 0;
+    }
+
+    /* ────────────────────────────────────────────
+       FOOTER
+    ──────────────────────────────────────────── */
+    .sayfa-footer {
+      border-top: 1px solid var(--line);
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: var(--ink-3);
+    }
+
+    /* ────────────────────────────────────────────
+       PRINT
+    ──────────────────────────────────────────── */
+    @media print {
+      .malzeme-sidebar { position: static; max-height: none; }
+      .icerik-wrap { display: block; }
+      body { background: #fff; font-size: 12px; }
+      h1 { font-size: 2.5rem; }
+      .puf-noktasi { break-inside: avoid; }
+      .adim { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="hero-inner">
+
+      <div class="eyebrow">
+        <span class="eyebrow-left">{{KATEGORI}}</span>
+        <span class="eyebrow-right">Sade Patisserie</span>
+      </div>
+
+      <h1>{{RECIPE_TITLE}}</h1>
+      <p class="original-name">{{ORIGINAL_TITLE}}</p>
+
+      <div class="meta-strip">
+        <div class="meta-item">
+          <span class="meta-label">Zorluk</span>
+          <span class="meta-val">{{ZORLUK}}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Hazırlık</span>
+          <span class="meta-val">{{HAZIRLIK_SURESI}}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Toplam</span>
+          <span class="meta-val">{{TOPLAM_SURE}}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Porsiyon</span>
+          <span class="meta-val">{{PORSIYON}}</span>
+        </div>
+      </div>
+
+      <div class="chip-row">{{STIL_TAGLERI}}</div>
+
+      <a class="source-link" href="{{KAYNAK_URL}}" target="_blank" rel="noopener">
+        ↗ {{KAYNAK_ADI}}
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── HİKAYE ───────────────────────────────────────── -->
+  <div class="hikaye-wrap">
+    <div class="hikaye">
+      <span class="hikaye-label">Hikaye</span>
+      <div class="hikaye-text">{{HIKAYE}}</div>
+    </div>
+  </div>
+
+  <!-- ── İÇERİK (Malzeme + Adımlar) ─────────────────── -->
+  <div class="icerik-wrap">
+
+    <!-- Malzeme Sidebar -->
+    <aside class="malzeme-sidebar">
+      <span class="sidebar-title">Malzemeler</span>
+      {{MALZEMELER_HTML}}
+    </aside>
+
+    <!-- Adımlar -->
+    <section class="adimlar">
+      <span class="adimlar-title">Yapım Aşamaları</span>
+      {{ADIMLAR_HTML}}
+    </section>
+
+  </div>
+
+  <!-- ── FOOTER ───────────────────────────────────────── -->
+  <footer>
+    <div class="sayfa-footer">
+      <span class="footer-note">
+        Bu sayfa <a href="{{KAYNAK_URL}}" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line)">{{KAYNAK_ADI}}</a> kaynağının Türkçe editöryal uyarlamasıdır.
+      </span>
+      <span class="footer-note">Teknik terimler gerektiğinde orijinal dilinde korunmuştur.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

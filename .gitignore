@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+data/preferences.json
+data/favorites.json
+lib/

@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reçete Scout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ────────────────────────────────────────────── */
+    :root {
+      --ff-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --ff-body:    'DM Sans', -apple-system, system-ui, sans-serif;
+      --ff-mono:    'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
+      --tr: 130ms ease;
+      --r:  4px;
+      --r-sm: 2px;
+      /* single accent — used ONLY for primary button, stars, running indicator */
+      --gold: #c9a96e;
+      --gold-h: #d9bc88;
+    }
+
+    /* ── Dark (default) ────────────────────────────────────── */
+    [data-theme="dark"] {
+      --bg:        #111;
+      --bg-card:   #1a1a1a;
+      --bg-form:   #161616;
+      --bg-input:  #1e1e1e;
+      --bg-tag:    #222;
+
+      --text:      #f0f0f0;
+      --text-2:    #909090;
+      --text-3:    #505050;
+
+      --border:    #282828;
+      --border-2:  #333;
+
+      --star-empty:   #2a2a2a;
+      --star-filled:  var(--gold);
+      --comp-filled:  #d0d0d0;
+      --comp-empty:   #222;
+
+      --tag-sel-bg:   #f0f0f0;
+      --tag-sel-text: #050505;
+      --link:         #888;
+    }
+
+    /* ── Light ─────────────────────────────────────────────── */
+    [data-theme="light"] {
+      --bg:        #fafafa;
+      --bg-card:   #fff;
+      --bg-form:   #f4f4f4;
+      --bg-input:  #f9f9f9;
+      --bg-tag:    #efefef;
+
+      --text:      #0a0a0a;
+      --text-2:    #555;
+      --text-3:    #999;
+
+      --border:    #e5e5e5;
+      --border-2:  #d0d0d0;
+
+      --star-empty:   #d5d5d5;
+      --star-filled:  var(--gold);
+      --comp-filled:  #222;
+      --comp-empty:   #e0e0e0;
+
+      --tag-sel-bg:   #0a0a0a;
+      --tag-sel-text: #fff;
+      --link:         #555;
+    }
+
+    /* ── Base ──────────────────────────────────────────────── */
+    body {
+      font-family: var(--ff-body);
+      font-size: 14px;
+      line-height: 1.65;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ────────────────────────────────────────────── */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.875rem 1.75rem;
+    }
+
+    .hdr-row1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .hdr-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 0.625rem;
+    }
+
+    .hdr-wordmark {
+      font-family: var(--ff-display);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .hdr-wordmark em {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .hdr-sub {
+      font-size: 0.675rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    #status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.75rem;
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border-2);
+      flex-shrink: 0;
+      transition: background var(--tr);
+    }
+
+    .status-dot.status-idle        { background: var(--border-2); }
+    .status-dot.status-connected   { background: var(--text-3); }
+    .status-dot.status-running     { background: var(--gold); animation: blink 1s ease infinite; }
+    .status-dot.status-success     { background: var(--text-2); }
+    .status-dot.status-error       { background: #c04040; }
+    .status-dot.status-disconnected{ background: #c04040; }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    #status-text   { color: var(--text-2); }
+    #status-detail { color: var(--text-3); font-size: 0.7rem; }
+    .elapsed-time  { font-size: 0.7rem; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+    /* ── Action Row ────────────────────────────────────────── */
+    .hdr-row2 {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      flex-wrap: wrap;
+    }
+
+    .recipe-url-input {
+      flex: 1;
+      min-width: 240px;
+      max-width: 400px;
+      padding: 0.425rem 0.7rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 0.775rem;
+      transition: border-color var(--tr);
+    }
+
+    .recipe-url-input::placeholder { color: var(--text-3); }
+    .recipe-url-input:focus { outline: none; border-color: var(--text-3); }
+    .recipe-url-input:disabled { opacity: 0.35; }
+
+    /* All header buttons */
+    .hdr-row2 button {
+      font-family: var(--ff-body);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      padding: 0.425rem 0.875rem;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border-2);
+      background: transparent;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all var(--tr);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .hdr-row2 button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .hdr-row2 button:hover:not(:disabled) {
+      color: var(--text);
+      border-color: var(--text-3);
+    }
+
+    /* Primary — the only colored button */
+    #btn-scout {
+      background: var(--gold);
+      color: #000;
+      border-color: var(--gold);
+      font-weight: 500;
+    }
+
+    #btn-scout:hover:not(:disabled) {
+      background: var(--gold-h);
+      border-color: var(--gold-h);
+      color: #000;
+    }
+
+    /* Stop — subtle red only when active */
+    #btn-stop {
+      color: #c04040;
+      border-color: rgba(192, 64, 64, 0.35);
+    }
+
+    #btn-stop:hover {
+      background: rgba(192, 64, 64, 0.06);
+      border-color: rgba(192, 64, 64, 0.55);
+    }
+
+    /* Save */
+    #btn-save:not(:disabled) {
+      color: var(--text-2);
+      border-color: var(--border-2);
+    }
+
+    .btn-theme, .btn-settings {
+      font-size: 0.875rem !important;
+      padding: 0.425rem 0.6rem !important;
+      color: var(--text-3) !important;
+      border-color: var(--border) !important;
+    }
+
+    /* ── Spinner ───────────────────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 11px; height: 11px;
+      border: 1.5px solid rgba(128,128,128,0.2);
+      border-top-color: var(--text-2);
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+    }
+
+    #btn-scout .spinner {
+      border-color: rgba(0,0,0,0.2);
+      border-top-color: #000;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Pipeline Progress ─────────────────────────────────── */
+    #pipeline-progress {
+      border-bottom: 1px solid var(--border);
+      padding: 0.875rem 1.75rem;
+    }
+
+    .progress-phase { margin-bottom: 0.875rem; }
+    .progress-phase:last-child { margin-bottom: 0; }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+    }
+
+    .phase-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .phase-count {
+      font-size: 0.7rem;
+      color: var(--text-2);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-bar-container {
+      background: var(--border);
+      border-radius: 1px;
+      height: 1px;
+      overflow: visible;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 1px;
+      background: var(--text-2);
+      border-radius: 1px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-items { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+
+    .progress-item {
+      font-size: 0.675rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--r-sm);
+      background: var(--bg-tag);
+      color: var(--text-3);
+      border: 1px solid var(--border);
+      transition: all 0.25s;
+    }
+
+    .progress-item.done  { color: var(--text-2); border-color: var(--border-2); background: var(--bg-input); }
+    .progress-item.error { color: #c04040; border-color: rgba(192,64,64,0.2); }
+
+    /* ── Stream Panel ──────────────────────────────────────── */
+    #stream-panel { border-bottom: 1px solid var(--border); }
+
+    .stream-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 1.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .stream-header:hover { background: rgba(255,255,255,0.015); }
+
+    .stream-title {
+      font-size: 0.675rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .toggle-arrow {
+      font-size: 0.55rem;
+      color: var(--text-3);
+      transition: transform var(--tr);
+      display: inline-block;
+    }
+
+    #stream-panel.collapsed .toggle-arrow { transform: rotate(-90deg); }
+
+    .stream-content {
+      max-height: 280px;
+      overflow-y: auto;
+      transition: max-height 0.28s ease;
+    }
+
+    #stream-panel.collapsed .stream-content { max-height: 0; overflow: hidden; }
+
+    #stream-log {
+      background: var(--bg);
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      padding: 0.75rem 1.75rem;
+      min-height: 40px;
+      line-height: 1.65;
+    }
+
+    .log-entry { padding: 0.03rem 0; }
+    .log-time      { color: #2a2a2a; margin-right: 0.5rem; }
+    .log-tool      { color: #606060; }
+    .log-assistant { color: #808080; }
+    .log-error     { color: #c04040; }
+    .log-warn      { color: #906030; }
+    .log-info      { color: #505050; }
+
+    /* ── Scrollbar ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+    /* ── Layout ────────────────────────────────────────────── */
+    .page-content {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.75rem;
+    }
+
+    /* ── Single Recipe ─────────────────────────────────────── */
+    #single-recipe-panel {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 0;
+    }
+
+    #single-recipe-panel h2 {
+      font-family: var(--ff-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 0.5rem;
+    }
+
+    .single-recipe-meta {
+      font-size: 0.775rem;
+      color: var(--text-3);
+      margin-bottom: 0.875rem;
+    }
+
+    #single-recipe-ready {
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: var(--bg-form);
+    }
+
+    #single-recipe-ready .ready-name {
+      flex: 1;
+      font-size: 0.85rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #btn-open-recipe {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.45rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-2);
+      border-radius: calc(var(--r) / 2);
+      font-size: 0.8rem;
+      font-family: var(--ff-body);
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color var(--tr), color var(--tr);
+    }
+
+    #btn-open-recipe:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    #single-recipe-frame {
+      width: 100%;
+      min-height: 860px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: #fff;
+    }
+
+    /* ── Main Recipes ──────────────────────────────────────── */
+    #recipes-container { padding: 2rem 0; }
+
+    .empty-state {
+      padding: 4rem 0;
+      text-align: center;
+      color: var(--text-3);
+      font-size: 0.825rem;
+    }
+
+    /* ── Category ──────────────────────────────────────────── */
+    .category {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category:last-child { border-bottom: none; margin-bottom: 0; }
+
+    .category h2 {
+      font-family: var(--ff-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.01em;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    @media (min-width: 720px) {
+      .card-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Recipe Card ───────────────────────────────────────── */
+    .recipe-card {
+      background: var(--bg-card);
+      position: relative;
+      transition: background var(--tr);
+    }
+
+    .recipe-card:hover { background: var(--bg-form); }
+
+    .recipe-info { padding: 1.125rem 1.25rem 1rem; }
+
+    /* ── Card Content ──────────────────────────────────────── */
+    .recipe-info h3 {
+      margin-bottom: 0.5rem;
+      padding-right: 1.75rem;
+    }
+
+    .recipe-name-tr {
+      display: block;
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .recipe-name-original {
+      display: block;
+      font-family: var(--ff-display);
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-3);
+      font-weight: 400;
+      margin-top: 0.1rem;
+    }
+
+    .source {
+      display: inline-block;
+      font-size: 0.725rem;
+      color: var(--link);
+      text-decoration: none;
+      margin-bottom: 0.375rem;
+      transition: color var(--tr);
+    }
+
+    .source:hover { color: var(--text-2); }
+
+    .difficulty {
+      font-size: 0.75rem;
+      color: var(--text-3);
+      margin-bottom: 0.5rem;
+    }
+
+    .why-selected {
+      font-family: var(--ff-display);
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--text-2);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .ingredients { margin-bottom: 0.6rem; }
+
+    .ingredients strong, .components strong {
+      display: block;
+      font-size: 0.625rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      font-weight: 500;
+      margin-bottom: 0.275rem;
+    }
+
+    .ingredients ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.15rem 0.7rem;
+    }
+
+    .ingredients li { font-size: 0.775rem; color: var(--text-2); }
+
+    .ingredients li::before {
+      content: '–';
+      margin-right: 0.3rem;
+      color: var(--text-3);
+    }
+
+    .components { margin-bottom: 0.6rem; }
+
+    .component-tag {
+      display: inline-block;
+      font-size: 0.675rem;
+      background: var(--bg-tag);
+      color: var(--text-2);
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--r-sm);
+      margin: 0.1rem 0.15rem 0.1rem 0;
+      border: 1px solid var(--border);
+    }
+
+    .tech-note {
+      font-size: 0.775rem;
+      color: var(--text-2);
+      padding-left: 0.75rem;
+      border-left: 1px solid var(--border-2);
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+
+    .complexity {
+      font-size: 0.75rem;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .complexity-bar { display: inline-flex; gap: 3px; }
+
+    .complexity-bar .block {
+      width: 11px; height: 3px;
+      border-radius: 1px;
+      background: var(--comp-empty);
+    }
+
+    .complexity-bar .block.filled { background: var(--comp-filled); }
+
+    /* ── Favorite Button ───────────────────────────────────── */
+    .btn-favorite {
+      position: absolute;
+      top: 0.75rem; right: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 1.05rem;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--text-3);
+      opacity: 0.4;
+      transition: opacity var(--tr), transform 0.12s;
+      padding: 0.2rem;
+      z-index: 2;
+    }
+
+    .btn-favorite:hover { opacity: 0.75; transform: scale(1.15); }
+
+    .btn-favorite.favorited {
+      color: #c04040;
+      opacity: 1;
+      animation: heartpop 0.22s ease;
+    }
+
+    @keyframes heartpop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── Scoring Form ──────────────────────────────────────── */
+    .scoring-form {
+      background: var(--bg-form);
+      border-top: 1px solid var(--border);
+      padding: 0.8rem 1.25rem 0.9rem;
+    }
+
+    .stars {
+      display: flex;
+      align-items: center;
+      gap: 0.1rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .stars label {
+      font-size: 0.625rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      font-weight: 500;
+      margin-right: 0.5rem;
+    }
+
+    .star {
+      background: none; border: none;
+      font-size: 1.15rem;
+      cursor: pointer;
+      color: var(--star-empty);
+      transition: color var(--tr), transform 0.1s;
+      padding: 0; line-height: 1;
+    }
+
+    .star:hover { transform: scale(1.2); }
+    .star.filled { color: var(--star-filled); }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .tags label {
+      font-size: 0.625rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      font-weight: 500;
+      margin-right: 0.2rem;
+      flex-shrink: 0;
+    }
+
+    .tag-btn {
+      font-size: 0.675rem;
+      font-family: var(--ff-body);
+      padding: 0.12rem 0.5rem;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border-2);
+      background: var(--bg-tag);
+      color: var(--text-3);
+      cursor: pointer;
+      transition: all var(--tr);
+    }
+
+    .tag-btn:hover { color: var(--text-2); border-color: var(--border-2); }
+
+    .tag-btn.selected {
+      background: var(--tag-sel-bg);
+      color: var(--tag-sel-text);
+      border-color: var(--tag-sel-bg);
+    }
+
+    .comment {
+      width: 100%;
+      font-family: var(--ff-body);
+      font-size: 0.75rem;
+      padding: 0.375rem 0.55rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      color: var(--text);
+      resize: vertical;
+      transition: border-color var(--tr);
+      margin-top: 0.25rem;
+    }
+
+    .comment::placeholder { color: var(--text-3); }
+    .comment:focus { outline: none; border-color: var(--border-2); }
+
+    .source-flags {
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.45rem 0.55rem;
+      margin-bottom: 0.45rem;
+      background: var(--bg-input);
+    }
+
+    .source-flags-title {
+      font-size: 0.625rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .source-flag {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.75rem;
+      color: var(--text-2);
+      cursor: pointer;
+      padding: 0.08rem 0;
+    }
+
+    .source-flag input { accent-color: var(--text-2); margin: 0; }
+
+    /* ── Favorites Panel ───────────────────────────────────── */
+    #favorites-panel {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: 0.01em;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .favorites-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 17px; height: 17px;
+      background: var(--text-3);
+      color: var(--bg);
+      font-size: 0.6rem;
+      font-family: var(--ff-body);
+      font-weight: 500;
+      border-radius: 9px;
+      padding: 0 4px;
+    }
+
+    /* ── Favorites List ────────────────────────────────────── */
+    .favorites-list {
+      list-style: none;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .fav-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      transition: background var(--tr);
+    }
+
+    .fav-item:last-child { border-bottom: none; }
+    .fav-item:hover { background: var(--bg-form); }
+
+    .fav-main {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .fav-name {
+      font-family: var(--ff-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .fav-original {
+      font-family: var(--ff-display);
+      font-size: 0.825rem;
+      font-style: italic;
+      color: var(--text-3);
+      font-weight: 400;
+    }
+
+    .fav-row {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      flex-wrap: wrap;
+      font-size: 0.725rem;
+      color: var(--text-3);
+    }
+
+    .fav-row a {
+      color: var(--link);
+      text-decoration: none;
+      transition: color var(--tr);
+    }
+
+    .fav-row a:hover { color: var(--text-2); }
+
+    .fav-tags { display: flex; flex-wrap: wrap; gap: 0.2rem; }
+
+    .fav-tag {
+      font-size: 0.65rem;
+      padding: 0.08rem 0.4rem;
+      border-radius: var(--r-sm);
+      background: var(--bg-tag);
+      color: var(--text-3);
+      border: 1px solid var(--border);
+    }
+
+    .btn-remove-fav {
+      background: none; border: none;
+      font-size: 0.675rem;
+      cursor: pointer;
+      color: var(--text-3);
+      opacity: 0.5;
+      transition: opacity var(--tr), color var(--tr);
+      padding: 0.1rem 0.2rem;
+      line-height: 1;
+      margin-left: auto;
+    }
+
+    .btn-remove-fav:hover { opacity: 1; color: #c04040; }
+
+    /* ── Settings Panel ────────────────────────────────────── */
+    #settings-panel {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0 3rem;
+    }
+
+    .settings-toggle-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+    }
+
+    .settings-toggle-header:hover .section-title { color: var(--text); }
+
+    #settings-content { display: none; }
+    #settings-content.open { display: block; }
+
+    /* ── Accordion ─────────────────────────────────────────── */
+    .acc-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .acc-item:last-child { border-bottom: none; }
+
+    .acc-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      cursor: pointer;
+      user-select: none;
+      transition: color var(--tr);
+    }
+
+    .acc-trigger:hover { color: var(--text); }
+
+    .acc-trigger-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-2);
+    }
+
+    .acc-arrow {
+      font-size: 0.55rem;
+      color: var(--text-3);
+      transition: transform var(--tr);
+      display: inline-block;
+    }
+
+    .acc-trigger.open .acc-arrow { transform: rotate(90deg); }
+
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+    }
+
+    .acc-inner {
+      padding: 0 0 1rem;
+    }
+
+    .acc-inner p {
+      font-size: 0.8rem;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 0.25rem;
+    }
+
+    .acc-inner pre {
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      background: var(--bg-form);
+      padding: 0.625rem 0.875rem;
+      border-radius: var(--r-sm);
+      overflow-x: auto;
+      color: var(--text-2);
+      margin-top: 0.3rem;
+      border: 1px solid var(--border);
+    }
+
+    .acc-empty {
+      font-size: 0.775rem;
+      color: var(--text-3);
+      padding: 0.5rem 0 1rem;
+      font-style: italic;
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header { padding: 0.75rem 1rem; }
+      .page-content { padding: 0 1rem; }
+      #stream-log { padding: 0.65rem 1rem; }
+      #pipeline-progress { padding: 0.65rem 1rem; }
+      .stream-header { padding: 0.45rem 1rem; }
+      .recipe-url-input { min-width: 0; width: 100%; }
+    }
+
+    /* ── Print ─────────────────────────────────────────────── */
+    @media print {
+      header { position: static; }
+      .hdr-row2, #stream-panel, #pipeline-progress, .scoring-form,
+      #favorites-panel, #settings-panel { display: none; }
+      .recipe-card { break-inside: avoid; }
+      body { background: #fff; color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header id="control-panel">
+    <div class="hdr-row1">
+      <div class="hdr-brand">
+        <span class="hdr-wordmark">R<em>S</em></span>
+        <span class="hdr-sub">Reçete Scout</span>
+      </div>
+      <div id="status-bar">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Hazır</span>
+        <span id="status-detail"></span>
+      </div>
+    </div>
+    <div class="hdr-row2">
+      <input type="url" id="recipe-url" class="recipe-url-input" placeholder="Tek reçete URL'si yapıştır..." />
+      <button type="button" id="btn-fetch-recipe" onclick="startFetchRecipe()">URL'den Çek</button>
+      <button type="button" id="btn-scout" onclick="startScout()">Reçete Getir</button>
+      <button type="button" id="btn-learn" onclick="startLearn()">Öğren</button>
+      <button type="button" id="btn-stop" onclick="stopAgent()" style="display:none">Durdur</button>
+      <button type="button" id="btn-save" onclick="saveScores()" disabled>Puanları Kaydet</button>
+      <button type="button" class="btn-settings" onclick="toggleSettings()" title="Ayarlar">⚙</button>
+      <button type="button" class="btn-theme" onclick="toggleTheme()" title="Tema">◐</button>
+    </div>
+  </header>
+
+  <!-- ── Pipeline Progress ──────────────────────────────── -->
+  <section id="pipeline-progress" style="display:none">
+    <div class="page-content">
+      <div class="progress-phase" id="phase-search">
+        <div class="phase-header">
+          <span class="phase-label">Kategori Araması</span>
+          <span class="phase-count" id="search-count">0/8</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="search-bar" style="width:0%"></div>
+        </div>
+        <div class="progress-items" id="search-items"></div>
+      </div>
+      <div class="progress-phase" id="phase-extract" style="display:none">
+        <div class="phase-header">
+          <span class="phase-label">Reçete Detayları</span>
+          <span class="phase-count" id="extract-count">0/0</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="extract-bar" style="width:0%"></div>
+        </div>
+        <div class="progress-items" id="extract-items"></div>
+      </div>
+      <div class="progress-phase" id="phase-render" style="display:none">
+        <span class="phase-label">HTML Oluşturuluyor...</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stream Panel ────────────────────────────────────── -->
+  <section id="stream-panel" class="collapsed">
+    <div class="stream-header" onclick="toggleStreamPanel()">
+      <span class="stream-title">Canlı Akış</span>
+      <span class="toggle-arrow">▶</span>
+    </div>
+    <div class="stream-content">
+      <div id="stream-log"></div>
+    </div>
+  </section>
+
+  <!-- ── Single Recipe ───────────────────────────────────── -->
+  <section id="single-recipe-panel" class="page-content">
+    <h2>Tek Reçete</h2>
+    <p class="single-recipe-meta" id="single-recipe-meta">Henüz tek reçete üretilmedi.</p>
+    <div id="single-recipe-ready">
+      <span class="ready-name" id="single-recipe-title">—</span>
+      <a id="btn-open-recipe" href="#" target="_blank" rel="noopener">
+        Sayfayı Aç ↗
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Recipes ─────────────────────────────────────────── -->
+  <main id="recipes-container" class="page-content">
+    <p class="empty-state" id="empty-state">
+      Henüz reçete yok. "Reçete Getir" butonuna tıklayarak başlayın.
+    </p>
+  </main>
+
+  <!-- ── Favorites ───────────────────────────────────────── -->
+  <section id="favorites-panel" class="page-content">
+    <h2 class="section-title">
+      Favoriler
+      <span class="favorites-count" id="favorites-count" style="display:none">0</span>
+    </h2>
+    <div id="favorites-content">
+      <p class="empty-state">Henüz favori yok. Beğendiğin reçetelerdeki ♡ butonuna tıkla.</p>
+    </div>
+  </section>
+
+  <!-- ── Settings (accordion, hidden by default) ─────────── -->
+  <section id="settings-panel" class="page-content" style="display:none">
+    <div class="settings-toggle-header" onclick="toggleSettings()">
+      <h2 class="section-title" style="margin:0;padding:0;border:none">Tercih Profili</h2>
+      <span class="toggle-arrow" id="settings-arrow">▶</span>
+    </div>
+    <div id="settings-content">
+      <p class="acc-empty" id="settings-empty">Henüz tercih profili oluşturulmamış. Reçeteleri puanlayıp "Öğren" butonuna tıklayın.</p>
+    </div>
+  </section>
+
+  <!-- Dummy element for JS backward compat -->
+  <div id="preferences-panel" style="display:none">
+    <div id="preferences-content"></div>
+  </div>
+
+  <script>
+    /* ===========================
+       WebSocket Connection
+       =========================== */
+    var ws;
+    var reconnectTimer;
+
+    /* ===========================
+       Pipeline Progress
+       =========================== */
+    var pipelineState = { searchTotal: 8, searchDone: 0, extractTotal: 0, extractDone: 0 };
+
+    function handlePipelineProgress(msg) {
+      var panel = document.getElementById('pipeline-progress');
+      panel.style.display = 'block';
+
+      switch (msg.phase) {
+        case 'search-start':
+          pipelineState.searchTotal = msg.detail.total;
+          pipelineState.searchDone = 0;
+          var items = document.getElementById('search-items');
+          items.innerHTML = '';
+          var cats = ['Viennoiserie','Tart','Entremets','Petit Gâteau','Çikolata','Trend','Uluslararası','Sandviç'];
+          cats.forEach(function(c) {
+            var span = document.createElement('span');
+            span.className = 'progress-item';
+            span.textContent = c;
+            span.id = 'search-cat-' + c.toLowerCase().replace(/[^a-z]/g, '');
+            items.appendChild(span);
+          });
+          break;
+
+        case 'search-done':
+          pipelineState.searchDone++;
+          document.getElementById('search-count').textContent = pipelineState.searchDone + '/' + pipelineState.searchTotal;
+          document.getElementById('search-bar').style.width = (pipelineState.searchDone / pipelineState.searchTotal * 100) + '%';
+          appendStreamLog('✓ ' + msg.detail.category + ' — reçeteler bulundu', 'tool');
+          break;
+
+        case 'search-error':
+          pipelineState.searchDone++;
+          document.getElementById('search-count').textContent = pipelineState.searchDone + '/' + pipelineState.searchTotal;
+          document.getElementById('search-bar').style.width = (pipelineState.searchDone / pipelineState.searchTotal * 100) + '%';
+          appendStreamLog('✗ ' + msg.detail.category + ' — ' + msg.detail.error, 'error');
+          break;
+
+        case 'search-complete':
+          appendStreamLog('arama tamamlandı — ' + msg.detail.found + ' reçete', 'info');
+          break;
+
+        case 'extract-start':
+          pipelineState.extractTotal = msg.detail.total;
+          pipelineState.extractDone = 0;
+          document.getElementById('phase-extract').style.display = 'block';
+          document.getElementById('extract-count').textContent = '0/' + msg.detail.total;
+          break;
+
+        case 'extract-done':
+          pipelineState.extractDone++;
+          document.getElementById('extract-count').textContent = pipelineState.extractDone + '/' + pipelineState.extractTotal;
+          document.getElementById('extract-bar').style.width = (pipelineState.extractDone / pipelineState.extractTotal * 100) + '%';
+          appendStreamLog(msg.detail.recipe + ' çıkarıldı', 'tool');
+          break;
+
+        case 'extract-error':
+          pipelineState.extractDone++;
+          document.getElementById('extract-count').textContent = pipelineState.extractDone + '/' + pipelineState.extractTotal;
+          document.getElementById('extract-bar').style.width = (pipelineState.extractDone / pipelineState.extractTotal * 100) + '%';
+          appendStreamLog(msg.detail.recipe + ' — fallback', 'warn');
+          break;
+
+        case 'extract-complete':
+          appendStreamLog('çıkarma tamamlandı — ' + msg.detail.extracted + ' reçete', 'info');
+          break;
+
+        case 'render-start':
+          document.getElementById('phase-render').style.display = 'block';
+          appendStreamLog('html oluşturuluyor...', 'info');
+          break;
+
+        case 'complete':
+          panel.style.display = 'none';
+          var sec = (msg.detail.duration / 1000).toFixed(1);
+          var cost = msg.detail.cost.toFixed(4);
+          appendStreamLog('tamamlandı — ' + msg.detail.recipeCount + ' reçete · ' + sec + 's · $' + cost, 'info');
+          break;
+      }
+    }
+
+    function connect() {
+      var protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(protocol + '//' + location.host);
+
+      ws.onopen = function() {
+        updateStatus('connected', 'Bağlandı');
+        ws.send(JSON.stringify({ type: 'get-preferences' }));
+        ws.send(JSON.stringify({ type: 'get-favorites' }));
+        ws.send(JSON.stringify({ type: 'get-result', date: getTodayDate() }));
+      };
+
+      ws.onmessage = function(event) {
+        var msg = JSON.parse(event.data);
+        handleMessage(msg);
+      };
+
+      ws.onclose = function() {
+        updateStatus('disconnected', 'Bağlantı koptu');
+        reconnectTimer = setTimeout(connect, 3000);
+      };
+
+      ws.onerror = function() { ws.close(); };
+    }
+
+    function handleMessage(msg) {
+      switch (msg.type) {
+        case 'status': handleStatusMessage(msg); break;
+        case 'tool': appendStreamLog(msg.message, 'tool'); break;
+        case 'assistant-text': appendStreamLog(msg.text, 'assistant'); break;
+        case 'log': appendStreamLog(msg.message, msg.level); break;
+        case 'result': handleResult(msg); break;
+        case 'result-html': renderRecipes(msg.html, msg.date); break;
+        case 'single-result-html': /* no longer used — page served directly */ break;
+        case 'preferences': renderPreferences(msg.data); break;
+        case 'favorites': renderFavorites(msg.data); break;
+        case 'pipeline-progress': handlePipelineProgress(msg); break;
+        case 'error': appendStreamLog(msg.message, 'error'); break;
+      }
+    }
+
+    function getTodayDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    /* ===========================
+       Control Functions
+       =========================== */
+    function startScout() {
+      if (!ws || ws.readyState !== WebSocket.OPEN) return;
+      setButtonsRunning(true, 'scout');
+      clearStreamLog();
+      expandStreamPanel();
+      document.getElementById('pipeline-progress').style.display = 'none';
+      document.getElementById('search-bar').style.width = '0%';
+      document.getElementById('extract-bar').style.width = '0%';
+      document.getElementById('search-count').textContent = '0/8';
+      document.getElementById('extract-count').textContent = '0/0';
+      document.getElementById('phase-extract').style.display = 'none';
+      document.getElementById('phase-render').style.display = 'none';
+      document.getElementById('search-items').innerHTML = '';
+      document.getElementById('extract-items').innerHTML = '';
+      pipelineState = { searchTotal: 8, searchDone: 0, extractTotal: 0, extractDone: 0 };
+      updateStatus('running', 'Paralel pipeline başlatılıyor...');
+      ws.send(JSON.stringify({ type: 'scout' }));
+    }
+
+    function startFetchRecipe() {
+      if (!ws || ws.readyState !== WebSocket.OPEN) return;
+      var input = document.getElementById('recipe-url');
+      var url = input.value.trim();
+      if (!url) { updateStatus('error', 'Önce bir reçete URL girin'); return; }
+      setButtonsRunning(true, 'fetch-recipe');
+      clearStreamLog();
+      expandStreamPanel();
+      updateStatus('running', 'Tek reçete sayfası hazırlanıyor...');
+      ws.send(JSON.stringify({ type: 'fetch-recipe', data: { url: url } }));
+    }
+
+    function startLearn() {
+      if (!ws || ws.readyState !== WebSocket.OPEN) return;
+      setButtonsRunning(true, 'learn');
+      clearStreamLog();
+      expandStreamPanel();
+      updateStatus('running', 'Öğreniyor...');
+      ws.send(JSON.stringify({ type: 'learn' }));
+    }
+
+    function stopAgent() {
+      if (!ws || ws.readyState !== WebSocket.OPEN) return;
+      ws.send(JSON.stringify({ type: 'stop' }));
+    }
+
+    function handleStatusMessage(msg) {
+      switch (msg.status) {
+        case 'started':
+          updateStatus('running', 'Keşif başladı — ' + (msg.date || ''));
+          break;
+        case 'completed':
+          updateStatus('success', 'Tamamlandı');
+          setButtonsRunning(false);
+          ws.send(JSON.stringify({ type: 'get-result', date: msg.date || getTodayDate() }));
+          break;
+        case 'single-started':
+          updateStatus('running', 'Tek reçete çekiliyor...');
+          if (msg.url) document.getElementById('single-recipe-meta').textContent = msg.url;
+          break;
+        case 'single-completed':
+          updateStatus('success', 'Tek reçete hazır');
+          setButtonsRunning(false);
+          showSingleRecipeReady(msg.recipeUrl, msg.fileName || msg.key);
+          break;
+        case 'error':
+          updateStatus('error', 'Hata oluştu');
+          setButtonsRunning(false);
+          break;
+        case 'learning-started':
+          updateStatus('running', 'Tercihler analiz ediliyor...');
+          break;
+        case 'learning-completed':
+          updateStatus('success', 'Öğrenme tamamlandı');
+          setButtonsRunning(false);
+          ws.send(JSON.stringify({ type: 'get-preferences' }));
+          break;
+        case 'learning-error':
+          updateStatus('error', 'Öğrenme hatası');
+          setButtonsRunning(false);
+          break;
+        case 'scores-saved':
+          updateStatus('success', 'Puanlar kaydedildi');
+          appendStreamLog(msg.message || 'Puanlar kaydedildi', 'info');
+          break;
+        case 'stopped':
+          updateStatus('idle', 'Durduruldu');
+          setButtonsRunning(false);
+          break;
+        case 'favorite-added':   updateStatus('success', msg.message); break;
+        case 'favorite-removed': updateStatus('success', msg.message); break;
+        case 'favorite-exists':  updateStatus('idle',    msg.message); break;
+      }
+    }
+
+    function handleResult(msg) {
+      var duration = msg.duration ? (msg.duration / 1000).toFixed(1) + 's' : 'bilinmiyor';
+      var cost = msg.cost != null ? '$' + msg.cost.toFixed(4) : 'bilinmiyor';
+      if (msg.isError) {
+        appendStreamLog((msg.message || 'hata') + ' — ' + duration + ' · ' + cost, 'error');
+        updateStatus('error', 'Agent hata döndürdü');
+        return;
+      }
+      appendStreamLog('tamamlandı — ' + duration + ' · ' + cost, 'info');
+    }
+
+    var elapsedTimer = null;
+    var startTime = null;
+
+    function setButtonsRunning(running, which) {
+      var btnFetchRecipe = document.getElementById('btn-fetch-recipe');
+      var btnScout = document.getElementById('btn-scout');
+      var btnLearn = document.getElementById('btn-learn');
+      var btnSave = document.getElementById('btn-save');
+      var recipeUrl = document.getElementById('recipe-url');
+
+      btnFetchRecipe.disabled = running;
+      btnScout.disabled = running;
+      btnLearn.disabled = running;
+      recipeUrl.disabled = running;
+      document.getElementById('btn-stop').style.display = running ? 'inline-flex' : 'none';
+
+      if (running) {
+        var targetBtn = which === 'learn' ? btnLearn : (which === 'fetch-recipe' ? btnFetchRecipe : btnScout);
+        var label = which === 'learn' ? 'Öğreniyor' : (which === 'fetch-recipe' ? 'Çekiyor' : 'Arıyor');
+        targetBtn.innerHTML = '<span class="spinner"></span>' + label + '...';
+        startTime = Date.now();
+        elapsedTimer = setInterval(updateElapsed, 1000);
+      } else {
+        btnFetchRecipe.textContent = "URL'den Çek";
+        btnScout.textContent = 'Reçete Getir';
+        btnLearn.textContent = 'Öğren';
+        clearInterval(elapsedTimer);
+        elapsedTimer = null;
+        var el = document.getElementById('elapsed');
+        if (el) el.remove();
+      }
+    }
+
+    function updateElapsed() {
+      if (!startTime) return;
+      var seconds = Math.floor((Date.now() - startTime) / 1000);
+      var min = Math.floor(seconds / 60);
+      var sec = seconds % 60;
+      var text = min > 0 ? min + 'dk ' + sec + 's' : sec + 's';
+      var el = document.getElementById('elapsed');
+      if (!el) {
+        el = document.createElement('span');
+        el.id = 'elapsed';
+        el.className = 'elapsed-time';
+        document.getElementById('status-bar').appendChild(el);
+      }
+      el.textContent = text;
+    }
+
+    /* ===========================
+       Stream Log
+       =========================== */
+    var MAX_LOG_ENTRIES = 500;
+
+    function appendStreamLog(message, level) {
+      var log = document.getElementById('stream-log');
+      var entry = document.createElement('div');
+      entry.className = 'log-entry log-' + level;
+      var time = new Date().toLocaleTimeString('tr-TR');
+      entry.innerHTML = '<span class="log-time">' + time + '</span> ' + escapeHtml(String(message));
+      log.appendChild(entry);
+      while (log.children.length > MAX_LOG_ENTRIES) log.removeChild(log.firstChild);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function clearStreamLog() { document.getElementById('stream-log').innerHTML = ''; }
+
+    function toggleStreamPanel() {
+      document.getElementById('stream-panel').classList.toggle('collapsed');
+    }
+
+    function expandStreamPanel() {
+      document.getElementById('stream-panel').classList.remove('collapsed');
+    }
+
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    /* ===========================
+       Recipe Rendering
+       =========================== */
+    function renderRecipes(html, date) {
+      var container = document.getElementById('recipes-container');
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, 'text/html');
+      var categories = doc.querySelectorAll('.category');
+
+      if (categories.length === 0) {
+        container.innerHTML = '<p class="empty-state">HTML parse edilemedi veya reçete kartı bulunamadı.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+
+      categories.forEach(function(cat) {
+        var section = document.createElement('section');
+        section.className = 'category';
+        section.id = cat.id;
+
+        var heading = cat.querySelector('h2');
+        if (heading) {
+          var h2 = document.createElement('h2');
+          h2.textContent = heading.textContent;
+          section.appendChild(h2);
+        }
+
+        var grid = document.createElement('div');
+        grid.className = 'card-grid';
+
+        cat.querySelectorAll('.recipe-card').forEach(function(card) {
+          var cloned = card.cloneNode(true);
+          addScoringForm(cloned);
+          grid.appendChild(cloned);
+        });
+
+        section.appendChild(grid);
+        container.appendChild(section);
+      });
+
+      renderComplexityBars();
+      loadScoresFromStorage(date);
+      document.getElementById('btn-save').disabled = false;
+      container.dataset.date = date;
+      updateStatus('idle', date + ' — ' + document.querySelectorAll('.recipe-card').length + ' reçete');
+    }
+
+    function showSingleRecipeReady(recipeUrl, fileName) {
+      var ready = document.getElementById('single-recipe-ready');
+      var title = document.getElementById('single-recipe-title');
+      var btn = document.getElementById('btn-open-recipe');
+      var meta = document.getElementById('single-recipe-meta');
+      title.textContent = fileName || recipeUrl;
+      btn.href = recipeUrl;
+      ready.style.display = 'flex';
+      meta.textContent = 'localhost:3000' + recipeUrl;
+      updateStatus('idle', 'Tek reçete yüklendi');
+    }
+
+    function addScoringForm(card) {
+      var existingForm = card.querySelector('.scoring-form');
+      if (existingForm) existingForm.remove();
+
+      var existingFav = card.querySelector('.btn-favorite');
+      if (!existingFav) {
+        var favBtn = document.createElement('button');
+        favBtn.type = 'button';
+        favBtn.className = 'btn-favorite';
+        favBtn.innerHTML = '&#9825;';
+        favBtn.title = 'Favorilere ekle';
+        favBtn.addEventListener('click', function() { toggleFavorite(card, favBtn); });
+        card.appendChild(favBtn);
+      }
+
+      var form = document.createElement('div');
+      form.className = 'scoring-form';
+
+      var TAGS = ['teknik','yaratici','klasik','sunum','uygulanabilir','trend','ilham','mevsimsel'];
+      var TAG_LABELS = { yaratici: 'yaratıcı' };
+
+      form.innerHTML =
+        '<div class="stars"><label>Puan:</label>' +
+        [1,2,3,4,5].map(function(v) { return '<button type="button" class="star" data-value="' + v + '">&#9733;</button>'; }).join('') +
+        '</div><div class="tags"><label>Etiketler:</label>' +
+        TAGS.map(function(t) { return '<button type="button" class="tag-btn" data-tag="' + t + '">' + (TAG_LABELS[t] || t) + '</button>'; }).join('') +
+        '</div>' +
+        '<div class="source-flags">' +
+        '<span class="source-flags-title">Kaynak Durumu</span>' +
+        '<label class="source-flag"><input type="checkbox" class="source-flag-input" data-flag="erisimHatasi"> Açılmıyor / 404</label>' +
+        '<label class="source-flag"><input type="checkbox" class="source-flag-input" data-flag="kullanma"> Bu kaynağı kullanma</label>' +
+        '</div>' +
+        '<textarea class="comment" placeholder="Yorum (opsiyonel)..." rows="2"></textarea>';
+
+      card.appendChild(form);
+      attachScoringEvents(card);
+    }
+
+    /* ===========================
+       Scoring Logic
+       =========================== */
+    var scores = {};
+
+    function normalizeDomain(url) {
+      if (!url) return '';
+      try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); }
+      catch (e) { return ''; }
+    }
+
+    function ensureScoreData(id) {
+      scores[id] = scores[id] || {};
+      scores[id].tags = scores[id].tags || [];
+      scores[id].kaynakDurumu = scores[id].kaynakDurumu || { erisimHatasi: false, kullanma: false };
+      return scores[id];
+    }
+
+    function getCardDomain(card) {
+      var sourceEl = card.querySelector('.source');
+      return normalizeDomain(sourceEl ? sourceEl.href : '');
+    }
+
+    function syncDomainFlagAcrossCards(domain, flag, value) {
+      if (!domain) return;
+      document.querySelectorAll('.recipe-card').forEach(function(card) {
+        if (getCardDomain(card) !== domain) return;
+        var id = card.dataset.id;
+        var data = ensureScoreData(id);
+        data.kaynakDurumu[flag] = value;
+        var checkbox = card.querySelector('.source-flag-input[data-flag="' + flag + '"]');
+        if (checkbox) checkbox.checked = value;
+      });
+    }
+
+    function attachScoringEvents(card) {
+      var id = card.dataset.id;
+
+      card.querySelectorAll('.star').forEach(function(star) {
+        star.addEventListener('click', function() {
+          var value = parseInt(star.dataset.value);
+          scores[id] = scores[id] || {};
+          scores[id].puan = value;
+          updateStarUI(card, value);
+          saveScoresToStorage();
+        });
+      });
+
+      card.querySelectorAll('.tag-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var tag = btn.dataset.tag;
+          var scoreData = ensureScoreData(id);
+          var idx = scoreData.tags.indexOf(tag);
+          if (idx > -1) scoreData.tags.splice(idx, 1);
+          else scoreData.tags.push(tag);
+          btn.classList.toggle('selected');
+          saveScoresToStorage();
+        });
+      });
+
+      card.querySelectorAll('.source-flag-input').forEach(function(input) {
+        input.addEventListener('change', function() {
+          var flag = input.dataset.flag;
+          var domain = getCardDomain(card);
+          ensureScoreData(id);
+          syncDomainFlagAcrossCards(domain, flag, input.checked);
+          saveScoresToStorage();
+        });
+      });
+
+      var textarea = card.querySelector('.comment');
+      var saveTimer;
+      textarea.addEventListener('input', function() {
+        var scoreData = ensureScoreData(id);
+        scoreData.yorum = textarea.value;
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveScoresToStorage, 400);
+      });
+    }
+
+    function updateStarUI(card, value) {
+      card.querySelectorAll('.star').forEach(function(star) {
+        star.classList.toggle('filled', parseInt(star.dataset.value) <= value);
+      });
+    }
+
+    function saveScoresToStorage() {
+      var date = document.getElementById('recipes-container').dataset.date || getTodayDate();
+      localStorage.setItem('dashboard-scores-' + date, JSON.stringify(scores));
+    }
+
+    function loadScoresFromStorage(date) {
+      var saved = localStorage.getItem('dashboard-scores-' + date);
+      if (!saved) { scores = {}; return; }
+      try { scores = JSON.parse(saved); } catch(e) { scores = {}; return; }
+
+      Object.keys(scores).forEach(function(id) {
+        var data = scores[id];
+        var card = document.querySelector('.recipe-card[data-id="' + id + '"]');
+        if (!card) return;
+        if (data.puan) updateStarUI(card, data.puan);
+        if (data.tags) {
+          data.tags.forEach(function(tag) {
+            var btn = card.querySelector('.tag-btn[data-tag="' + tag + '"]');
+            if (btn) btn.classList.add('selected');
+          });
+        }
+        if (data.yorum) {
+          var textarea = card.querySelector('.comment');
+          if (textarea) textarea.value = data.yorum;
+        }
+        if (data.kaynakDurumu) {
+          Object.keys(data.kaynakDurumu).forEach(function(flag) {
+            var checkbox = card.querySelector('.source-flag-input[data-flag="' + flag + '"]');
+            if (checkbox) checkbox.checked = !!data.kaynakDurumu[flag];
+          });
+        }
+      });
+
+      document.querySelectorAll('.recipe-card').forEach(function(card) {
+        var id = card.dataset.id;
+        var data = ensureScoreData(id);
+        if (data.kaynakDurumu.erisimHatasi) syncDomainFlagAcrossCards(getCardDomain(card), 'erisimHatasi', true);
+        if (data.kaynakDurumu.kullanma) syncDomainFlagAcrossCards(getCardDomain(card), 'kullanma', true);
+      });
+    }
+
+    function saveScores() {
+      var date = document.getElementById('recipes-container').dataset.date || getTodayDate();
+      var exportData = { tarih: date, puanlamaTarihi: new Date().toISOString(), receteler: {} };
+
+      document.querySelectorAll('.recipe-card').forEach(function(card) {
+        var id = card.dataset.id;
+        var nameEl = card.querySelector('.recipe-name-tr');
+        var sourceEl = card.querySelector('.source');
+        var sourceUrl = sourceEl ? sourceEl.href : '';
+        var kaynakDomain = normalizeDomain(sourceUrl);
+        var components = [];
+        card.querySelectorAll('.component-tag').forEach(function(t) { components.push(t.textContent); });
+        var complexityEl = card.querySelector('.complexity');
+        var complexity = complexityEl ? (parseInt(complexityEl.dataset.score) || 0) : 0;
+
+        var scoreData = ensureScoreData(id);
+        exportData.receteler[id] = {
+          ad: nameEl ? nameEl.textContent : '',
+          kategori: card.dataset.category,
+          kaynak: sourceUrl,
+          kaynakDomain: kaynakDomain,
+          kaynakDurumu: {
+            erisimHatasi: !!scoreData.kaynakDurumu.erisimHatasi,
+            kullanma: !!scoreData.kaynakDurumu.kullanma
+          },
+          bilesenler: components,
+          karmasiklik: complexity,
+          puan: scoreData.puan || null,
+          tags: scoreData.tags || [],
+          yorum: scoreData.yorum || ''
+        };
+      });
+
+      ws.send(JSON.stringify({ type: 'save-scores', data: exportData }));
+    }
+
+    /* ===========================
+       Favorites
+       =========================== */
+    var currentFavorites = [];
+
+    function toggleFavorite(card, btn) {
+      var nameEl = card.querySelector('.recipe-name-tr');
+      var sourceEl = card.querySelector('.source');
+      var ad = nameEl ? nameEl.textContent.trim() : '';
+      var kaynak = sourceEl ? sourceEl.href : '';
+      var isFav = currentFavorites.some(function(f) { return f.ad === ad && f.kaynak === kaynak; });
+
+      if (isFav) {
+        ws.send(JSON.stringify({ type: 'remove-favorite', data: { ad: ad, kaynak: kaynak } }));
+      } else {
+        var id = card.dataset.id;
+        var scoreData = scores[id] || {};
+        var components = [];
+        card.querySelectorAll('.component-tag').forEach(function(t) { components.push(t.textContent); });
+        var complexityEl = card.querySelector('.complexity');
+        var complexity = complexityEl ? (parseInt(complexityEl.dataset.score) || 0) : 0;
+        var originalEl = card.querySelector('.recipe-name-original');
+        var whyEl = card.querySelector('.why-selected');
+        var techEl = card.querySelector('.tech-note');
+        var date = document.getElementById('recipes-container').dataset.date || getTodayDate();
+
+        ws.send(JSON.stringify({
+          type: 'add-favorite',
+          data: {
+            ad: ad,
+            orijinalAd: originalEl ? originalEl.textContent.trim() : '',
+            kaynak: kaynak,
+            kategori: card.dataset.category || '',
+            bilesenler: components,
+            karmasiklik: complexity,
+            puan: scoreData.puan || null,
+            tags: scoreData.tags || [],
+            yorum: scoreData.yorum || '',
+            nedenSecildi: whyEl ? whyEl.textContent.trim() : '',
+            teknikNot: techEl ? techEl.textContent.trim() : '',
+            bulunmaTarihi: date
+          }
+        }));
+      }
+    }
+
+    function renderFavorites(favorites) {
+      currentFavorites = favorites || [];
+      var container = document.getElementById('favorites-content');
+      var countEl = document.getElementById('favorites-count');
+
+      if (currentFavorites.length > 0) {
+        countEl.textContent = currentFavorites.length;
+        countEl.style.display = 'inline-flex';
+      } else {
+        countEl.style.display = 'none';
+      }
+
+      if (currentFavorites.length === 0) {
+        container.innerHTML = '<p class="empty-state">Henüz favori yok. Beğendiğin reçetelerdeki ♡ butonuna tıkla.</p>';
+        updateFavoriteButtons();
+        return;
+      }
+
+      var html = '<ul class="favorites-list">';
+      currentFavorites.forEach(function(fav, idx) {
+        html += '<li class="fav-item">';
+        html += '<div class="fav-main">';
+        html += '<span class="fav-name">' + escapeHtml(fav.ad) + '</span>';
+        if (fav.orijinalAd) html += '<span class="fav-original">' + escapeHtml(fav.orijinalAd) + '</span>';
+        html += '</div>';
+        html += '<div class="fav-row">';
+        if (fav.kategori) html += '<span>' + escapeHtml(fav.kategori) + '</span>';
+        if (fav.puan) html += '<span>★ ' + fav.puan + '</span>';
+        if (fav.bulunmaTarihi) html += '<span>' + fav.bulunmaTarihi + '</span>';
+        if (fav.kaynak) html += '<a href="' + escapeHtml(fav.kaynak) + '" target="_blank" rel="noopener">kaynak →</a>';
+        html += '<button type="button" class="btn-remove-fav" onclick="removeFavorite(' + idx + ')">✕</button>';
+        html += '</div>';
+        if (fav.tags && fav.tags.length) {
+          html += '<div class="fav-tags">';
+          fav.tags.forEach(function(t) { html += '<span class="fav-tag">' + escapeHtml(t) + '</span>'; });
+          html += '</div>';
+        }
+        html += '</li>';
+      });
+      html += '</ul>';
+
+      container.innerHTML = html;
+      updateFavoriteButtons();
+    }
+
+    function removeFavorite(index) {
+      ws.send(JSON.stringify({ type: 'remove-favorite', data: { index: index } }));
+    }
+
+    function updateFavoriteButtons() {
+      document.querySelectorAll('.recipe-card').forEach(function(card) {
+        var nameEl = card.querySelector('.recipe-name-tr');
+        var sourceEl = card.querySelector('.source');
+        var btn = card.querySelector('.btn-favorite');
+        if (!btn || !nameEl) return;
+        var ad = nameEl.textContent.trim();
+        var kaynak = sourceEl ? sourceEl.href : '';
+        var isFav = currentFavorites.some(function(f) { return f.ad === ad && f.kaynak === kaynak; });
+        if (isFav) {
+          btn.innerHTML = '&#9829;';
+          btn.classList.add('favorited');
+          btn.title = 'Favorilerden çıkar';
+        } else {
+          btn.innerHTML = '&#9825;';
+          btn.classList.remove('favorited');
+          btn.title = 'Favorilere ekle';
+        }
+      });
+    }
+
+    /* ===========================
+       Settings Panel + Preferences (Accordion)
+       =========================== */
+    var settingsOpen = false;
+
+    function toggleSettings() {
+      settingsOpen = !settingsOpen;
+      var panel = document.getElementById('settings-panel');
+      var content = document.getElementById('settings-content');
+      var arrow = document.getElementById('settings-arrow');
+      panel.style.display = 'block';
+      content.classList.toggle('open', settingsOpen);
+      if (arrow) arrow.style.transform = settingsOpen ? 'rotate(90deg)' : '';
+    }
+
+    function renderPreferences(data) {
+      var panel = document.getElementById('settings-panel');
+      var content = document.getElementById('settings-content');
+      var emptyEl = document.getElementById('settings-empty');
+
+      if (!data) return;
+
+      panel.style.display = 'block';
+      if (emptyEl) emptyEl.remove();
+
+      var sections = [
+        {
+          key: 'stil_profili',
+          label: 'Stil Profili',
+          render: function(sp) {
+            var html = '';
+            if (sp.tercih_edilen_bilesenler) html += '<p><strong>Tercih Edilen Bileşenler:</strong> ' + formatValue(sp.tercih_edilen_bilesenler) + '</p>';
+            if (sp.tercih_edilen_teksturler)    html += '<p><strong>Tekstür Kontrastları:</strong> ' + formatValue(sp.tercih_edilen_teksturler) + '</p>';
+            if (sp.tercih_edilen_lezzet_aileleri) html += '<p><strong>Lezzet Aileleri:</strong> ' + formatValue(sp.tercih_edilen_lezzet_aileleri) + '</p>';
+            if (sp.karmasiklik_tercihi) html += '<p><strong>Karmaşıklık Tercihi:</strong> ' + formatValue(sp.karmasiklik_tercihi) + '</p>';
+            return html;
+          }
+        },
+        {
+          key: 'bilesen_tercihleri',
+          label: 'Bileşen Tercihleri',
+          render: function(v) { return '<p>' + formatValue(v) + '</p>'; }
+        },
+        {
+          key: 'kaynak_kalite_haritasi',
+          label: 'Kaynak Kalitesi',
+          render: function(kk) {
+            var html = '';
+            if (kk.yuksek_kalite) html += '<p><strong>Yüksek Kalite:</strong> ' + formatValue(kk.yuksek_kalite) + '</p>';
+            if (kk.dusuk_kalite)  html += '<p><strong>Düşük Kalite:</strong> ' + formatValue(kk.dusuk_kalite) + '</p>';
+            return html;
+          }
+        },
+        {
+          key: 'kaynak_engel_listesi',
+          label: 'Engellenen Kaynaklar',
+          render: function(ke) {
+            var html = '';
+            if (ke.erisim_sorunlu)  html += '<p><strong>Erişim Sorunlu:</strong> ' + formatValue(ke.erisim_sorunlu) + '</p>';
+            if (ke.kullanma_listesi) html += '<p><strong>Kullanma Listesi:</strong> ' + formatValue(ke.kullanma_listesi) + '</p>';
+            return html;
+          }
+        },
+        {
+          key: 'tag_analizi',
+          label: 'Tag Analizi',
+          render: function(v) { return '<p>' + formatValue(v) + '</p>'; }
+        },
+        {
+          key: 'kacinilacaklar',
+          label: 'Kaçınılacaklar',
+          render: function(v) { return '<p>' + formatValue(v) + '</p>'; }
+        },
+        {
+          key: 'kullanici_yorumlari_ozet',
+          label: 'Yorum Özeti',
+          render: function(v) { return '<p>' + formatValue(v) + '</p>'; }
+        },
+        {
+          key: 'favori_analizi',
+          label: 'Favori Analizi',
+          render: function(v) { return '<p>' + formatValue(v) + '</p>'; }
+        }
+      ];
+
+      // Clear existing accordion items
+      content.querySelectorAll('.acc-item').forEach(function(el) { el.remove(); });
+      content.classList.add('open');
+      settingsOpen = true;
+      var arrow = document.getElementById('settings-arrow');
+      if (arrow) arrow.style.transform = 'rotate(90deg)';
+
+      sections.forEach(function(sec, i) {
+        var val = data[sec.key];
+        if (!val) return;
+        var body = sec.render(val);
+        if (!body) return;
+
+        var item = document.createElement('div');
+        item.className = 'acc-item';
+        item.innerHTML =
+          '<div class="acc-trigger" onclick="toggleAccordion(this)">' +
+            '<span class="acc-trigger-label">' + sec.label + '</span>' +
+            '<span class="acc-arrow">▶</span>' +
+          '</div>' +
+          '<div class="acc-body"><div class="acc-inner">' + body + '</div></div>';
+        content.appendChild(item);
+      });
+    }
+
+    function toggleAccordion(trigger) {
+      var body = trigger.nextElementSibling;
+      var isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
+      body.style.maxHeight = isOpen ? '0px' : body.scrollHeight + 'px';
+      trigger.classList.toggle('open', !isOpen);
+    }
+
+    function formatValue(val) {
+      if (Array.isArray(val)) {
+        if (!val.length) return '';
+        if (typeof val[0] === 'object') return '<pre>' + escapeHtml(JSON.stringify(val, null, 2)) + '</pre>';
+        return escapeHtml(val.join(', '));
+      }
+      if (typeof val === 'object') return '<pre>' + escapeHtml(JSON.stringify(val, null, 2)) + '</pre>';
+      return escapeHtml(String(val));
+    }
+
+    /* ===========================
+       Utilities
+       =========================== */
+    function updateStatus(state, text) {
+      document.getElementById('status-dot').className = 'status-dot status-' + state;
+      document.getElementById('status-text').textContent = text;
+    }
+
+    function toggleTheme() {
+      var html = document.documentElement;
+      var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    function renderComplexityBars() {
+      document.querySelectorAll('.complexity').forEach(function(el) {
+        var score = parseInt(el.dataset.score) || 0;
+        var barEl = el.querySelector('.complexity-bar');
+        if (!barEl) return;
+        barEl.innerHTML = '';
+        for (var i = 1; i <= 5; i++) {
+          var block = document.createElement('span');
+          block.className = 'block' + (i <= score ? ' filled' : '');
+          barEl.appendChild(block);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+      connect();
+    });
+  </script>
+</body>
+</html>
